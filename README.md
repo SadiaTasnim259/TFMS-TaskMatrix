@@ -100,8 +100,8 @@ php artisan key:generate
 
 ### 4. Database Setup
 
-#### Option A: SQLite (Simplest for Development)
-1. Ensure the database driver is set to `sqlite` in your `.env` file (this is the default):
+#### Option A: SQLite (Simplest for Development / Default)
+1. Ensure the database driver is set to `sqlite` in your `.env` file (this is the default when copying `.env.example`):
    ```ini
    DB_CONNECTION=sqlite
    # DB_HOST=... (comment out or remove other DB_ settings)
@@ -162,10 +162,10 @@ You should see output indicating all services are running. Open your browser to 
 ### Default Login Credentials (from Seeders)
 If you ran `--seed`, the following default users are available:
 
-- **Admin**: `admin@example.com` / `password`
-- **HOD**: `hod@example.com` / `password`
-- **PSM**: `psm@example.com` / `password`
-- **Lecturer**: `user@example.com` / `password`
+- **Admin**: `admin@tfms.local` / `Admin123`
+- **HOD (CS)**: `hod_cs@tfms.local` / `Hod123`
+- **PSM**: `psm@tfms.local` / `Psm123`
+- **Lecturer**: `lecturer@tfms.local` / `Lecturer123`
 
 ---
 
@@ -208,6 +208,21 @@ If you prefer using Docker, a `Dockerfile` is provided.
 **4. "500 Server Error"**
 - **Check Logs:** Look at `storage/logs/laravel.log`.
 - **Common Fix:** Ensure `.env` exists and `php artisan key:generate` was run.
+
+**5. "rollup.darwin-arm64.node" cannot be opened (macOS)**
+- **Cause:** macOS security blocking unauthorized binaries.
+- **Fix:** Go to **System Settings > Privacy & Security**, scroll down, and click **"Allow Anyway"** for the blocked app. Or run:
+  ```bash
+  xattr -d com.apple.quarantine node_modules/@rollup/rollup-darwin-arm64/rollup.darwin-arm64.node
+  ```
+
+**6. "Cannot find native binding" or "npm has a bug"**
+- **Cause:** Corrupted or incompatible binary bindings in `node_modules`.
+- **Fix:** Reinstall dependencies cleanly:
+  ```bash
+  rm -rf node_modules package-lock.json
+  npm install
+  ```
 
 ### Setup Verification
 To confirm everything is installed correctly:
