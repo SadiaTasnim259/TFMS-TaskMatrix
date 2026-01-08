@@ -242,7 +242,7 @@ class Department extends Model
                 'action' => 'CREATE',
                 'model_type' => 'Department',
                 'model_id' => $department->id,
-                'user_id' => auth()->id() ?? 1,
+                'user_id' => auth()->id(),
                 'old_values' => [],
                 'new_values' => $department->toArray(),
             ]);
@@ -254,7 +254,7 @@ class Department extends Model
                 'action' => 'UPDATE',
                 'model_type' => 'Department',
                 'model_id' => $department->id,
-                'user_id' => auth()->id() ?? 1,
+                'user_id' => auth()->id(),
                 'old_values' => $department->getOriginal(),
                 'new_values' => $department->getAttributes(),
             ]);

@@ -63,11 +63,19 @@ return new class extends Migration {
 
             // Migrate data: Update user_id based on staff_id
             if (Schema::hasColumn($tableName, 'staff_id') && Schema::hasTable('staff')) {
-                DB::statement("
-                    UPDATE {$tableName} 
-                    JOIN staff ON {$tableName}.staff_id = staff.id 
-                    SET {$tableName}.user_id = staff.user_id
-                ");
+                if (DB::getDriverName() === 'sqlite') {
+                    DB::statement("
+                        UPDATE {$tableName} 
+                        SET user_id = (SELECT user_id FROM staff WHERE staff.id = {$tableName}.staff_id)
+                        WHERE EXISTS (SELECT 1 FROM staff WHERE staff.id = {$tableName}.staff_id)
+                    ");
+                } else {
+                    DB::statement("
+                        UPDATE {$tableName} 
+                        JOIN staff ON {$tableName}.staff_id = staff.id 
+                        SET {$tableName}.user_id = staff.user_id
+                    ");
+                }
             }
         }
 
@@ -81,16 +89,30 @@ return new class extends Migration {
             // If we can't be sure, we might leave it or try to update.
             // Given it's dev, let's try to update assuming it points to staff table if staff table exists.
             if (Schema::hasTable('staff')) {
-                DB::statement("
+                if (DB::getDriverName() === 'sqlite') {
+                    DB::statement("
+                    UPDATE task_forces 
+                    SET owner_id = (SELECT user_id FROM staff WHERE staff.id = task_forces.owner_id)
+                    WHERE EXISTS (SELECT 1 FROM staff WHERE staff.id = task_forces.owner_id)
+                ");
+                } else {
+                    DB::statement("
                     UPDATE task_forces 
                     JOIN staff ON task_forces.owner_id = staff.id
                     SET task_forces.owner_id = staff.user_id
                 ");
+                }
             }
 
             // Drop the FK to staff
             try {
-                DB::statement("ALTER TABLE task_forces DROP FOREIGN KEY task_forces_owner_id_foreign");
+                try {
+                    Schema::table('task_forces', function (Blueprint $table) {
+                        $table->dropForeign(['owner_id']);
+                    });
+                } catch (\Exception $e) {
+                    // Ignore if FK doesn't exist
+                }
             } catch (\Exception $e) {
                 // Ignore if FK doesn't exist
             }
@@ -131,17 +153,95 @@ return new class extends Migration {
         // 4. Drop staff_id columns and constraints from related tables
         foreach ($tables as $tableName) {
             if (Schema::hasColumn($tableName, 'staff_id')) {
+                // Step 1: Drop Constraints and Indexes
                 Schema::table($tableName, function (Blueprint $table) use ($tableName) {
-                    // Try to drop foreign key first. Naming convention: table_staff_id_foreign
-                    // We try-catch or just attempt generic name
-                    try {
-                        $table->dropForeign("{$tableName}_staff_id_foreign");
-                    } catch (\Exception $e) {
+                    if (DB::getDriverName() === 'sqlite') {
                         try {
                             $table->dropForeign(['staff_id']);
-                        } catch (\Exception $e2) {
+                        } catch (\Exception $e) {
+                        }
+                    } else {
+                        try {
+                            $table->dropForeign("{$tableName}_staff_id_foreign");
+                        } catch (\Exception $e) {
+                            try {
+                                $table->dropForeign(['staff_id']);
+                            } catch (\Exception $e) {
+                            }
                         }
                     }
+
+                    // SQLite Fix: Drop indexes explicitely
+                    if ($tableName === 'workload_submissions') {
+                        if (DB::getDriverName() === 'sqlite') {
+                            DB::statement("DROP INDEX IF EXISTS workload_submissions_staff_id_academic_year_semester_index");
+                            DB::statement("DROP INDEX IF EXISTS workload_submissions_staff_id_index");
+                            // For the array one, we can guess the name or just ignore if the above covers it
+                        } else {
+                            try {
+                                $table->dropIndex(['staff_id', 'academic_year', 'semester']);
+                            } catch (\Exception $e) {
+                            }
+
+                            try {
+                                $table->dropIndex('workload_submissions_staff_id_index');
+                            } catch (\Exception $e) {
+                            }
+
+                            try {
+                                $table->dropIndex(['staff_id']);
+                            } catch (\Exception $e) {
+                            }
+                        }
+                    }
+
+                    if ($tableName === 'performance_scores') {
+                        if (DB::getDriverName() === 'sqlite') {
+                            DB::statement("DROP INDEX IF EXISTS performance_scores_staff_id_academic_year_semester_unique");
+                            DB::statement("DROP INDEX IF EXISTS performance_scores_staff_id_index");
+                            DB::statement("DROP INDEX IF EXISTS performance_scores_staff_id_unique");
+                        } else {
+                            try {
+                                $table->dropIndex('performance_scores_staff_id_academic_year_semester_unique');
+                            } catch (\Exception $e) {
+                            }
+                            try {
+                                $table->dropIndex(['staff_id']);
+                            } catch (\Exception $e) {
+                            }
+                        }
+                    }
+
+                    if ($tableName === 'reports') {
+                        if (DB::getDriverName() === 'sqlite') {
+                            DB::statement("DROP INDEX IF EXISTS reports_staff_id_index");
+                        } else {
+                            try {
+                                $table->dropIndex(['staff_id']);
+                            } catch (\Exception $e) {
+                            }
+                        }
+                    }
+
+                    if ($tableName === 'task_force_members') {
+                        if (DB::getDriverName() === 'sqlite') {
+                            DB::statement("DROP INDEX IF EXISTS task_force_members_staff_id_index");
+                            DB::statement("DROP INDEX IF EXISTS task_force_members_task_force_id_staff_id_unique");
+                        } else {
+                            try {
+                                $table->dropIndex(['staff_id']);
+                            } catch (\Exception $e) {
+                            }
+                            try {
+                                $table->dropIndex(['task_force_id', 'staff_id']);
+                            } catch (\Exception $e) {
+                            }
+                        }
+                    }
+                });
+
+                // Step 2: Drop Column (Separate transaction for SQLite safety)
+                Schema::table($tableName, function (Blueprint $table) {
                     $table->dropColumn('staff_id');
                 });
             }
@@ -150,14 +250,24 @@ return new class extends Migration {
         // Special handling for Departments (head_id logic)
         if (Schema::hasTable('departments') && Schema::hasColumn('departments', 'head_id')) {
             if (Schema::hasTable('staff')) {
-                DB::statement("
+                if (DB::getDriverName() === 'sqlite') {
+                    DB::statement("
+                    UPDATE departments 
+                    SET head_id = (SELECT user_id FROM staff WHERE staff.id = departments.head_id)
+                    WHERE EXISTS (SELECT 1 FROM staff WHERE staff.id = departments.head_id)
+                ");
+                } else {
+                    DB::statement("
                     UPDATE departments 
                     JOIN staff ON departments.head_id = staff.id
                     SET departments.head_id = staff.user_id
                 ");
+                }
             }
             try {
-                DB::statement("ALTER TABLE departments DROP FOREIGN KEY departments_head_id_foreign");
+                Schema::table('departments', function (Blueprint $table) {
+                    $table->dropForeign(['head_id']);
+                });
             } catch (\Exception $e) {
             }
 
