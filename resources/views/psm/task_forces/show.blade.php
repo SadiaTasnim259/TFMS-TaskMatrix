@@ -113,13 +113,14 @@
                                                 <i class="fas fa-check"></i> Approve
                                             </button>
                                         </form>
-                                        <form action="{{ route('psm.task-forces.reject-request', [$taskForce->id, $req->id]) }}"
-                                            method="POST" class="d-inline">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-danger" title="Reject">
-                                                <i class="fas fa-times"></i> Reject
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn btn-sm btn-danger" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#rejectRequestModal"
+                                            data-request-url="{{ route('psm.task-forces.reject-request', [$taskForce->id, $req->id]) }}"
+                                            data-requester-name="{{ $req->requester->name }}"
+                                            title="Reject">
+                                            <i class="fas fa-times"></i> Reject
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -322,6 +323,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Remove Member Modal
             var removeMemberModal = document.getElementById('removeMemberModal');
             if (removeMemberModal) {
                 removeMemberModal.addEventListener('show.bs.modal', function (event) {
@@ -336,7 +338,51 @@
                     removeForm.action = removeUrl;
                 });
             }
+
+            // Reject Request Modal
+            var rejectRequestModal = document.getElementById('rejectRequestModal');
+            if (rejectRequestModal) {
+                rejectRequestModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    var requestUrl = button.getAttribute('data-request-url');
+                    var requesterName = button.getAttribute('data-requester-name');
+
+                    var modalRequesterName = rejectRequestModal.querySelector('#modalRequesterName');
+                    var rejectForm = rejectRequestModal.querySelector('#rejectRequestForm');
+
+                    modalRequesterName.textContent = requesterName;
+                    rejectForm.action = requestUrl;
+                });
+            }
         });
     </script>
 
+    <!-- Reject Request Modal -->
+    <div class="modal fade" id="rejectRequestModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Reject Membership Request</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <form id="rejectRequestForm" method="POST" action="">
+                    @csrf
+                    <div class="modal-body">
+                        <p>Are you sure you want to reject the request from <strong id="modalRequesterName"></strong>?</p>
+                        <div class="mb-3">
+                            <label for="remarks" class="form-label">Reason for Rejection <span
+                                    class="text-danger">*</span></label>
+                            <textarea class="form-control" id="remarks" name="remarks" rows="3" required
+                                placeholder="Please provide a reason..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Confirm Rejection</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
