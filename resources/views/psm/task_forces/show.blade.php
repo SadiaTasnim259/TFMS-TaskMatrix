@@ -12,6 +12,10 @@
                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#unlockModal">
                     <i class="fas fa-unlock me-1"></i> Unlock
                 </button>
+            @else
+                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#lockModal">
+                    <i class="fas fa-lock me-1"></i> Lock
+                </button>
             @endif
             <a href="{{ route('psm.task-forces.index') }}" class="btn btn-secondary">Back</a>
         </div>

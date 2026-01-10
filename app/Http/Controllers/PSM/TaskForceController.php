@@ -123,11 +123,20 @@ class TaskForceController extends Controller
             }
 
             // LOCK the Task Force
-            $taskForce->lock();
+            // $taskForce->lock(); // Disabled manual locking preferred by user
 
-            // ... (existing code) ...
+            // Log Audit (moved from below caught by ...)
+            AuditLog::log(
+                'REQ_APPROVED',
+                'MembershipRequest',
+                $membershipRequest->id,
+                ['status' => 'pending'],
+                ['status' => 'approved'],
+                "Approved membership {$membershipRequest->action}",
+                "TaskForce: {$membershipRequest->taskForce->name}"
+            );
 
-            return back()->with('success', 'Request approved. Notifications sent. Task Force is now locked.');
+            return back()->with('success', 'Request approved. Notifications sent.');
 
         } catch (\Exception $e) {
             return back()->with('error', 'Error processing request: ' . $e->getMessage());
