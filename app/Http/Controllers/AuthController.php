@@ -58,7 +58,7 @@ class AuthController extends Controller
 
         // ❌ User doesn't exist
         if (!$user) {
-            return back()->withErrors(['email' => 'Invalid username or password.'])
+            return back()->withErrors(['email' => 'Invalid email or password.'])
                 ->onlyInput('email');
         }
 
@@ -92,7 +92,7 @@ class AuthController extends Controller
 
             Log::info("Failed login: {$user->email} ({$user->failed_login_attempts} attempts)");
             // Generic error message to match "User not found" case
-            return back()->withErrors(['email' => 'Invalid username or password.'])
+            return back()->withErrors(['email' => 'Invalid email or password.'])
                 ->onlyInput('email');
         }
 
