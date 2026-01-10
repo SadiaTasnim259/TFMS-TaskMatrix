@@ -20,7 +20,7 @@
     <!-- Info Cards -->
     <div class="row g-4 mb-4">
         <!-- Metadata -->
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card shadow-sm h-100 border-0">
                 <div class="card-header bg-white py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Task Force Information</h6>
@@ -62,27 +62,7 @@
             </div>
         </div>
 
-        <!-- Leader -->
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100 border-0">
-                <div class="card-body text-center">
-                    <div class="mb-3">
-                        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mx-auto"
-                            style="width: 64px; height: 64px; font-size: 1.5rem;">
-                            @if($taskForce->leader)
-                                {{ substr($taskForce->leader->first_name, 0, 1) }}{{ substr($taskForce->leader->last_name, 0, 1) }}
-                            @else
-                                <i class="fas fa-user-tie"></i>
-                            @endif
-                        </div>
-                    </div>
-                    <h5 class="fw-bold mb-0">
-                        {{ $taskForce->leader ? $taskForce->leader->name : 'No Leader Assigned' }}
-                    </h5>
-                    <p class="text-muted small mb-0">Task Force Leader</p>
-                </div>
-            </div>
-        </div>
+
     </div>
 
 

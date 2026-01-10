@@ -83,9 +83,6 @@
                                     <div class="small">
                                         <i class="fas fa-users me-1 text-muted"></i> {{ $tf->members_count }} Members
                                     </div>
-                                    <div class="small text-muted mt-1">
-                                        <i class="fas fa-user-tie me-1"></i> Lead: {{ $tf->leader ? $tf->leader->name : 'N/A' }}
-                                    </div>
                                 </td>
                                 <td class="text-center">
                                     @if ($tf->is_locked)
