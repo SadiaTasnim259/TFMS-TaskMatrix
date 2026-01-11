@@ -280,6 +280,11 @@ class TaskForceController extends Controller
      */
     public function lockTaskForce(TaskForce $taskForce)
     {
+        // Check for pending requests
+        if ($taskForce->membershipRequests()->where('status', 'pending')->exists()) {
+            return back()->with('error', 'Cannot lock Task Force. There are pending membership requests that must be processed first.');
+        }
+
         $taskForce->lock();
 
         AuditLog::log(
