@@ -119,7 +119,7 @@ class AuditLog extends Model
     public function scopeForEntity($query, $modelType, $modelId)
     {
         return $query->where('model_type', $modelType)
-                     ->where('model_id', $modelId);
+            ->where('model_id', $modelId);
     }
 
     /**
@@ -132,10 +132,10 @@ class AuditLog extends Model
         }
 
         $changes = [];
-        
+
         foreach ($this->new_values as $key => $newValue) {
             $oldValue = $this->old_values[$key] ?? null;
-            
+
             if ($oldValue !== $newValue) {
                 $changes[$key] = [
                     'old' => $oldValue,
@@ -174,6 +174,13 @@ class AuditLog extends Model
 
         $formatted = [];
         foreach ($values as $key => $value) {
+            if (is_array($value)) {
+                $value = json_encode($value);
+            } elseif (is_bool($value)) {
+                $value = $value ? 'true' : 'false';
+            } elseif (is_null($value)) {
+                $value = 'null';
+            }
             $formatted[] = "{$key}: {$value}";
         }
 
@@ -242,8 +249,8 @@ class AuditLog extends Model
     public static function getRecentLogs($limit = 10)
     {
         return static::latest('created_at')
-                     ->limit($limit)
-                     ->get();
+            ->limit($limit)
+            ->get();
     }
 
     /**
@@ -252,9 +259,9 @@ class AuditLog extends Model
     public static function getUserLogs($userId, $limit = 50)
     {
         return static::where('user_id', $userId)
-                     ->latest('created_at')
-                     ->limit($limit)
-                     ->get();
+            ->latest('created_at')
+            ->limit($limit)
+            ->get();
     }
 
     /**
