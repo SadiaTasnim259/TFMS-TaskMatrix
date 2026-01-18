@@ -190,7 +190,7 @@ class UserController extends Controller
     {
         $this->authorize('update', $user);
         $user->load('role', 'department');
-        $roles = Role::all();
+        $roles = Role::where('name', '!=', 'TaskForceOwner')->get();
         $departments = Department::active()->get();
 
         return view('admin.users.edit', compact('user', 'roles', 'departments'));
