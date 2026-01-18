@@ -36,7 +36,7 @@ class TaskForceController extends Controller
         $departmentId = $user->department_id;
 
         // Start query filtering by HOD's department
-        $query = TaskForce::query()
+        $query = TaskForce::active()
             ->whereHas('departments', function ($q) use ($departmentId) {
                 $q->where('departments.id', $departmentId);
             });
