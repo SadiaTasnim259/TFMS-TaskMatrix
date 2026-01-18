@@ -73,10 +73,10 @@
                                 </td>
                                 <td>
                                     <span
-                                        class="badge bg-warning bg-opacity-10 text-warning rounded-pill">{{ $taskForce->weightage ?? '0' }}</span>
+                                        class="badge bg-warning bg-opacity-10 text-warning rounded-pill">{{ $taskForce->default_weightage ?? '0' }}</span>
                                 </td>
                                 <td>
-                                    @if ($taskForce->is_active)
+                                    @if ($taskForce->active)
                                         <span class="badge bg-success bg-opacity-10 text-success">Active</span>
                                     @else
                                         <span class="badge bg-secondary bg-opacity-10 text-secondary">Inactive</span>
