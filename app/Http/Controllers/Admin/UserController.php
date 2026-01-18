@@ -120,11 +120,25 @@ class UserController extends Controller
             'notes' => 'nullable|string',
         ]);
 
-        // Get Role Slug for server-side validation logic
+        // Role Validation for Department
         $role = Role::find($validated['role_id']);
         if (in_array($role->slug, ['lecturer', 'hod'])) {
             if (empty($validated['department_id'])) {
                 return back()->withInput()->withErrors(['department_id' => 'The department field is required for Lecturers and HODs.']);
+            }
+        }
+
+        // Enforce One HOD per Department Rule
+        if ($role->slug === 'hod') {
+            $existingHod = User::where('department_id', $validated['department_id'])
+                ->whereHas('role', function ($q) {
+                    $q->where('slug', 'hod');
+                })
+                ->where('is_active', true) // Only count active HODs
+                ->exists();
+
+            if ($existingHod) {
+                return back()->withInput()->withErrors(['department_id' => 'This department already has an active HOD. Only one HOD is allowed per department.']);
             }
         }
 
@@ -223,6 +237,21 @@ class UserController extends Controller
         if (in_array($role->slug, ['lecturer', 'hod'])) {
             if (empty($validated['department_id'])) {
                 return back()->withInput()->withErrors(['department_id' => 'The department field is required for Lecturers and HODs.']);
+            }
+        }
+
+        // Enforce One HOD per Department Rule
+        if ($role->slug === 'hod') {
+            $existingHod = User::where('department_id', $validated['department_id'])
+                ->whereHas('role', function ($q) {
+                    $q->where('slug', 'hod');
+                })
+                ->where('id', '!=', $user->id) // Exclude current user
+                ->where('is_active', true)
+                ->exists();
+
+            if ($existingHod) {
+                return back()->withInput()->withErrors(['department_id' => 'This department already has an active HOD. Only one HOD is allowed per department.']);
             }
         }
 
