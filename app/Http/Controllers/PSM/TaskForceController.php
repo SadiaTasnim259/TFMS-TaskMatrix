@@ -15,7 +15,7 @@ class TaskForceController extends Controller
      */
     public function index(Request $request)
     {
-        $query = TaskForce::query()
+        $query = TaskForce::active()
             ->with(['leader', 'departments'])
             ->withCount('members');
 
