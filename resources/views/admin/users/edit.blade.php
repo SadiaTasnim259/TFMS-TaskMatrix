@@ -85,7 +85,7 @@
 
 
                         <!-- Department -->
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="department_group">
                             <label for="department_id" class="form-label">Department <span class="text-danger">*</span></label>
                             <select name="department_id" id="department_id"
                                 class="form-select @error('department_id') is-invalid @enderror" required>
@@ -138,4 +138,61 @@
             </div>
         </div>
     </div>
+    @section('js')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleSelect = document.getElementById('role_id');
+            const departmentGroup = document.getElementById('department_group');
+            const departmentSelect = document.getElementById('department_id');
+
+            // Pass roles data to JS
+            const roles = @json($roles);
+
+            function updateDepartmentVisibility() {
+                const selectedRoleId = roleSelect.value;
+                const selectedRole = roles.find(r => r.id == selectedRoleId);
+
+                if (selectedRole) {
+                    const slug = selectedRole.slug;
+                    // Roles that do NOT need department: admin, psm, management
+                    if (['admin', 'psm', 'management', 'task-force-owner'].includes(slug)) {
+                        departmentGroup.style.display = 'none';
+                        departmentSelect.removeAttribute('required');
+                        
+                        // Only clear value if user interacts (optional, but safer to keep existing value on load if hidden? 
+                        // Actually, if we want to validly submit, we should probably clear it or ensure backend ignores it.
+                        // But for UI, let's behave like create: clear it if hidden to avoid confusion)
+                        // However, on INITIAL load, if it's admin, it's likely null.
+                        // Let's only clear on change.
+                    } else if (['lecturer', 'hod'].includes(slug)) {
+                         // Roles that NEED department
+                        departmentGroup.style.display = 'block';
+                        departmentSelect.setAttribute('required', 'required');
+                    } else {
+                         // Fallback for others
+                        departmentGroup.style.display = 'none';
+                        departmentSelect.removeAttribute('required');
+                    }
+                } else {
+                     // Default state
+                    departmentGroup.style.display = 'none';
+                    departmentSelect.removeAttribute('required');
+                }
+            }
+
+            roleSelect.addEventListener('change', function() {
+                // If switching TO a non-department role, clear the selection
+                const selectedRoleId = roleSelect.value;
+                const selectedRole = roles.find(r => r.id == selectedRoleId);
+                 if (selectedRole && ['admin', 'psm', 'management', 'task-force-owner'].includes(selectedRole.slug)) {
+                    departmentSelect.value = ''; 
+                 }
+                updateDepartmentVisibility();
+            });
+            
+            // Initial run
+            updateDepartmentVisibility();
+        });
+    </script>
+    @endsection
 @endsection
