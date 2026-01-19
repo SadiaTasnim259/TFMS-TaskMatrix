@@ -190,9 +190,48 @@ class DashboardController extends Controller
             return \Maatwebsite\Excel\Facades\Excel::download($export, $filename . '.csv');
         }
 
-        // PDF Logic - placeholder for now
+        // PDF generation using DomPDF
         if ($format === 'pdf') {
-            return back()->with('error', 'PDF generation is currently being configured. Please use CSV for now.');
+            $workloadService = $this->workloadService;
+
+            if ($type === 'workload') {
+                $users = User::with('department')
+                    ->withSum([
+                        'taskForces' => function ($q) {
+                            $q->where('task_forces.active', true);
+                        }
+                    ], 'default_weightage')
+                    ->where('is_active', true)
+                    ->whereNotNull('department_id')
+                    ->get();
+
+                $pdf = Pdf::loadView('management.pdf.workload', compact('users', 'workloadService'));
+
+            } elseif ($type === 'department') {
+                $departments = Department::with([
+                    'staff' => function ($query) {
+                        $query->where('is_active', true)
+                            ->withSum([
+                                'taskForces' => function ($q) {
+                                    $q->where('task_forces.active', true);
+                                }
+                            ], 'default_weightage');
+                    }
+                ])->get();
+
+                $pdf = Pdf::loadView('management.pdf.department', compact('departments', 'workloadService'));
+
+            } elseif ($type === 'taskforce') {
+                $departments = Department::withCount([
+                    'taskForces' => function ($query) {
+                        $query->where('task_forces.active', true);
+                    }
+                ])->get();
+
+                $pdf = Pdf::loadView('management.pdf.taskforce', compact('departments'));
+            }
+
+            return $pdf->download($filename . '.pdf');
         }
 
         return back();

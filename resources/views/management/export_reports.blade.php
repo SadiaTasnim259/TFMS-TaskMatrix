@@ -66,7 +66,7 @@
                                         <label class="form-check-label" for="format_pdf">
                                             <span class="d-block fw-bold"><i class="fas fa-file-pdf me-1 text-danger"></i>
                                                 PDF</span>
-                                            <small class="text-muted">Best for printing (Coming Soon)</small>
+                                            <small class="text-muted">Best for printing</small>
                                         </label>
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@
 
         /* When input is checked, style the parent div? CSS :has() is modern but let's stick to safe CSS or simple styles */
         /* We can't style the parent based on child easily without :has. 
-               So just styling the label/input relation is fine. 
-            */
+                   So just styling the label/input relation is fine. 
+                */
     </style>
 @endsection
