@@ -257,7 +257,7 @@
                                     <option value="{{ $staff->id }}">
                                         {{ $staff->first_name }} {{ $staff->last_name }}
                                         &bull; {{ $staff->employmentStatusLabel() }}
-                                        &bull; {{ $staff->current_load }}% Load
+                                        &bull; Workload: {{ $staff->current_load }}
                                     </option>
                                 @endforeach
                             </select>
