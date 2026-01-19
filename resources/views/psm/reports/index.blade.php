@@ -54,7 +54,7 @@
                                             <label class="form-check-label stretched-link d-flex align-items-center"
                                                 for="format_excel">
                                                 <i class="fas fa-file-csv text-success fs-4 me-3"></i>
-                                                <span class="fw-bold text-dark">Excel / CSV</span>
+                                                <span class="fw-bold text-dark">CSV</span>
                                             </label>
                                         </div>
                                     </div>
