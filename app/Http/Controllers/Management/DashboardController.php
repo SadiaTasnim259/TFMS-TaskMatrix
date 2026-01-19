@@ -179,129 +179,19 @@ class DashboardController extends Controller
         $format = $request->format;
         $filename = $type . '_report_' . date('Y-m-d_H-i-s');
 
-        $workloadService = $this->workloadService;
-
-        // Logic for CSV generation (simplest for now)
+        // CSV/Excel generation using Laravel Excel
         if ($format === 'csv') {
-            return response()->streamDownload(function () use ($type, $workloadService) {
-                set_time_limit(0);
-                $file = fopen('php://output', 'w');
+            $export = match ($type) {
+                'workload' => new \App\Exports\ManagementWorkloadExport(),
+                'department' => new \App\Exports\ManagementDepartmentExport(),
+                'taskforce' => new \App\Exports\ManagementTaskforceExport(),
+            };
 
-                if ($type === 'department') {
-                    // Header for Department Comparison
-                    fputcsv($file, ['Department', 'Staff Count', 'Avg Weightage', 'Under-loaded', 'Balanced', 'Overloaded']);
-
-                    // Eager load active staff and sum their task force weightage directly from DB
-                    // This avoids hydrating TaskForce models entirely
-                    $departments = Department::with([
-                        'staff' => function ($query) {
-                            $query->where('is_active', true)
-                                ->withSum([
-                                    'taskForces' => function ($q) {
-                                        $q->where('task_forces.active', true);
-                                    }
-                                ], 'default_weightage');
-                        }
-                    ])->get();
-
-                    foreach ($departments as $dept) {
-                        $count = $dept->staff->count();
-
-                        $totalWorkload = 0;
-                        $under = 0;
-                        $bal = 0;
-                        $over = 0;
-
-                        foreach ($dept->staff as $s) {
-                            // Use aggregated sum from DB
-                            $w = $s->task_forces_sum_default_weightage ?? 0;
-
-                            $totalWorkload += $w;
-
-                            $st = $workloadService->calculateStatus($w);
-                            if ($st === 'Under-loaded')
-                                $under++;
-                            elseif ($st === 'Balanced')
-                                $bal++;
-                            elseif ($st === 'Overloaded')
-                                $over++;
-                        }
-
-                        $avg = $count > 0 ? round($totalWorkload / $count, 2) : 0;
-
-                        fputcsv($file, [
-                            $dept->name,
-                            $count,
-                            $avg,
-                            $under,
-                            $bal,
-                            $over
-                        ]);
-                        flush(); // Flush buffer to keep connection alive
-                    }
-
-                } elseif ($type === 'workload') {
-                    // Header for Workload Summary
-                    fputcsv($file, ['Staff Name', 'Department', 'Total Workload', 'Status']);
-
-                    // Eager load sum directly
-                    $users = User::with('department')
-                        ->withSum([
-                            'taskForces' => function ($q) {
-                                $q->where('task_forces.active', true);
-                            }
-                        ], 'default_weightage')
-                        ->where('is_active', true)
-                        ->whereNotNull('department_id')
-                        ->get();
-
-                    foreach ($users as $user) {
-                        $w = $user->task_forces_sum_default_weightage ?? 0;
-                        $st = $workloadService->calculateStatus($w);
-
-                        fputcsv($file, [
-                            $user->name,
-                            $user->department ? $user->department->name : 'N/A',
-                            $w,
-                            $st
-                        ]);
-                        flush();
-                    }
-
-                } elseif ($type === 'taskforce') {
-                    // Header for Taskforce Distribution
-                    fputcsv($file, ['Department', 'Active Task Forces', 'Uncategorized']);
-
-                    // Optimized: Use database counting
-                    $departments = Department::withCount([
-                        'taskForces' => function ($query) {
-                            $query->where('task_forces.active', true);
-                        }
-                    ])->get();
-
-                    foreach ($departments as $d) {
-                        fputcsv($file, [$d->name, $d->task_forces_count, $d->task_forces_count]);
-                        flush();
-                    }
-                }
-
-                fclose($file);
-            }, $filename . '.csv');
+            return \Maatwebsite\Excel\Facades\Excel::download($export, $filename . '.csv');
         }
 
-        // PDF Logic (Placeholder - would usually use DomPDF)
+        // PDF Logic - placeholder for now
         if ($format === 'pdf') {
-            // For now, redirect with message that only CSV is fully ready, or implement basic PDF.
-            // Given user instructions, we should try to satisfy it. 
-            // But setting up DomPDF might break without config.
-            // Let's force CSV for now or just return text.
-            // Actually, let's keep it simple: redirect back with "PDF Generation Coming Soon" or do a simple print view?
-            // User explicitly asked for "PDF/Excel". 
-            // Providing CSV covers Excel.
-            // For PDF, let's do a StreamDownload of a simple HTML if DomPDF isn't there, OR just fallback to CSV with a warning?
-            // Let's assume DomPDF is NOT installed and fallback to a browser print view? 
-            // Or better, just stick to CSV code for step 1 and verify.
-
             return back()->with('error', 'PDF generation is currently being configured. Please use CSV for now.');
         }
 

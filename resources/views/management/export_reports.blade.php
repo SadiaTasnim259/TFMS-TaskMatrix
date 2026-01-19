@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
     <div class="container-fluid">
@@ -56,7 +56,7 @@
                                             value="csv" checked>
                                         <label class="form-check-label" for="format_csv">
                                             <span class="d-block fw-bold"><i class="fas fa-file-csv me-1 text-success"></i>
-                                                CSV / Excel</span>
+                                                CSV</span>
                                             <small class="text-muted">Best for data analysis</small>
                                         </label>
                                     </div>
@@ -117,7 +117,7 @@
 
         /* When input is checked, style the parent div? CSS :has() is modern but let's stick to safe CSS or simple styles */
         /* We can't style the parent based on child easily without :has. 
-       So just styling the label/input relation is fine. 
-    */
+               So just styling the label/input relation is fine. 
+            */
     </style>
 @endsection
