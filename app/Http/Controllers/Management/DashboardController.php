@@ -184,35 +184,50 @@ class DashboardController extends Controller
         // Logic for CSV generation (simplest for now)
         if ($format === 'csv') {
             return response()->streamDownload(function () use ($type, $workloadService) {
+                set_time_limit(0);
                 $file = fopen('php://output', 'w');
 
                 if ($type === 'department') {
-                    // Header
-                    fputcsv($file, ['Department', 'Staff Count', 'Avg Workload', 'Status Under', 'Status Balanced', 'Status Over']);
+                    // Header for Department Comparison
+                    fputcsv($file, ['Department', 'Staff Count', 'Avg Weightage', 'Under-loaded', 'Balanced', 'Overloaded']);
 
-                    $departments = Department::with('staff')->get();
+                    // Eager load active staff and sum their task force weightage directly from DB
+                    // This avoids hydrating TaskForce models entirely
+                    $departments = Department::with([
+                        'staff' => function ($query) {
+                            $query->where('is_active', true)
+                                ->withSum([
+                                    'taskForces' => function ($q) {
+                                        $q->where('task_forces.active', true);
+                                    }
+                                ], 'default_weightage');
+                        }
+                    ])->get();
+
                     foreach ($departments as $dept) {
-                        // Simplify calculation for export speed
-                        $activeStaff = $dept->staff->where('is_active', true);
-                        $count = $activeStaff->count();
-                        $totalW = 0;
+                        $count = $dept->staff->count();
+
+                        $totalWorkload = 0;
                         $under = 0;
                         $bal = 0;
                         $over = 0;
 
-                        foreach ($activeStaff as $s) {
-                            $w = $s->calculateTotalWorkload();
-                            $totalW += $w;
+                        foreach ($dept->staff as $s) {
+                            // Use aggregated sum from DB
+                            $w = $s->task_forces_sum_default_weightage ?? 0;
+
+                            $totalWorkload += $w;
+
                             $st = $workloadService->calculateStatus($w);
                             if ($st === 'Under-loaded')
                                 $under++;
                             elseif ($st === 'Balanced')
                                 $bal++;
-                            else
+                            elseif ($st === 'Overloaded')
                                 $over++;
                         }
 
-                        $avg = $count > 0 ? round($totalW / $count, 2) : 0;
+                        $avg = $count > 0 ? round($totalWorkload / $count, 2) : 0;
 
                         fputcsv($file, [
                             $dept->name,
@@ -222,19 +237,26 @@ class DashboardController extends Controller
                             $bal,
                             $over
                         ]);
+                        flush(); // Flush buffer to keep connection alive
                     }
 
                 } elseif ($type === 'workload') {
-                    // Header
+                    // Header for Workload Summary
                     fputcsv($file, ['Staff Name', 'Department', 'Total Workload', 'Status']);
 
-                    $users = \App\Models\User::with('department')->where('role_id', '!=', 1)->get(); // Exclude admin? or just all
-                    foreach ($users as $user) {
-                        // Skip if user shouldn't be here?
-                        if (!$user->isActive())
-                            continue;
+                    // Eager load sum directly
+                    $users = User::with('department')
+                        ->withSum([
+                            'taskForces' => function ($q) {
+                                $q->where('task_forces.active', true);
+                            }
+                        ], 'default_weightage')
+                        ->where('is_active', true)
+                        ->whereNotNull('department_id')
+                        ->get();
 
-                        $w = $user->calculateTotalWorkload();
+                    foreach ($users as $user) {
+                        $w = $user->task_forces_sum_default_weightage ?? 0;
                         $st = $workloadService->calculateStatus($w);
 
                         fputcsv($file, [
@@ -243,13 +265,23 @@ class DashboardController extends Controller
                             $w,
                             $st
                         ]);
+                        flush();
                     }
+
                 } elseif ($type === 'taskforce') {
-                    fputcsv($file, ['Department', 'Active Task Forces']);
-                    // Simple aggregation
-                    $departments = Department::withCount('taskForces')->get();
+                    // Header for Taskforce Distribution
+                    fputcsv($file, ['Department', 'Active Task Forces', 'Uncategorized']);
+
+                    // Optimized: Use database counting
+                    $departments = Department::withCount([
+                        'taskForces' => function ($query) {
+                            $query->where('task_forces.active', true);
+                        }
+                    ])->get();
+
                     foreach ($departments as $d) {
-                        fputcsv($file, [$d->name, $d->task_forces_count]);
+                        fputcsv($file, [$d->name, $d->task_forces_count, $d->task_forces_count]);
+                        flush();
                     }
                 }
 
