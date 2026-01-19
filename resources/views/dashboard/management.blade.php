@@ -11,7 +11,8 @@
             <p class="text-muted">View faculty-wide summaries, compare departments, and export executive reports.</p>
         </div>
         <div class="col-md-4">
-            <div class="card bg-dark text-white border-0 shadow-sm">
+            <div class="card text-white border-0 shadow-sm"
+                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                 <div class="card-body p-3">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
