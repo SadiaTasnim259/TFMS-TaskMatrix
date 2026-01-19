@@ -11,7 +11,8 @@
             <p class="text-muted">View your assigned task forces, workload summary, and submit remarks to your HOD.</p>
         </div>
         <div class="col-md-4">
-            <div class="card bg-info text-white border-0 shadow-sm">
+            <div class="card text-white border-0 shadow-sm"
+                style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
                 <div class="card-body p-3">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -39,7 +40,8 @@
                             <p class="text-muted small mb-1 text-uppercase fw-bold">Current Status</p>
                             <h3
                                 class="mb-0 fw-bold {{ str_contains($statusColor, 'green') ? 'text-success' : (str_contains($statusColor, 'yellow') ? 'text-warning' : 'text-danger') }}">
-                                {{ $status }}</h3>
+                                {{ $status }}
+                            </h3>
                         </div>
                         <div
                             class="bg-{{ str_contains($statusColor, 'green') ? 'success' : (str_contains($statusColor, 'yellow') ? 'warning' : 'danger') }} bg-opacity-10 rounded-circle p-3">
