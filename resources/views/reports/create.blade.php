@@ -73,8 +73,8 @@
                                     onclick="selectReport('task-force-performance')" style="cursor: pointer;">
                                     <div class="card-body text-center">
                                         <i class="fas fa-users fa-3x text-warning mb-3"></i>
-                                        <h5>Task Force Performance Report</h5>
-                                        <p class="text-muted small">Task force KPIs, department participation, and
+                                        <h5>TaskForce Performance Report</h5>
+                                        <p class="text-muted small">TaskForce KPIs, department participation, and
                                             achievements</p>
                                     </div>
                                 </div>
@@ -143,9 +143,9 @@
 
                                 <!-- Task Force-specific field -->
                                 <div class="col-md-12" id="taskforce-field" style="display: none;">
-                                    <label class="form-label">Task Force <span class="text-danger">*</span></label>
+                                    <label class="form-label">TaskForce <span class="text-danger">*</span></label>
                                     <select name="task_force_id" class="form-select">
-                                        <option value="">Select Task Force</option>
+                                        <option value="">Select TaskForce</option>
                                         @foreach($taskForces as $tf)
                                             <option value="{{ $tf->id }}" {{ old('task_force_id') == $tf->id ? 'selected' : '' }}>
                                                 {{ $tf->name }}
@@ -211,8 +211,8 @@
                         <p class="small text-muted">Displays performance scores, ratings, and trends for staff in a selected
                             period.</p>
 
-                        <h6 class="text-warning mt-3">Task Force Performance Report</h6>
-                        <p class="small text-muted">Shows task force achievements, department participation, KPIs, and
+                        <h6 class="text-warning mt-3">TaskForce Performance Report</h6>
+                        <p class="small text-muted">Shows TaskForce achievements, department participation, KPIs, and
                             overall effectiveness.</p>
                     </div>
                 </div>

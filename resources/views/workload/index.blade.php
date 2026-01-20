@@ -95,7 +95,7 @@
                         <table class="table table-sm table-hover">
                             <thead>
                                 <tr>
-                                    <th>Task Force Name</th>
+                                    <th>TaskForce Name</th>
                                     <th>Category</th>
                                     <th>Role</th>
                                     <th>Weightage</th>

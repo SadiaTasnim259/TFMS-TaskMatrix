@@ -181,7 +181,7 @@
                             </a>
                             <a class="nav-link @if(request()->routeIs('admin.task-forces.*')) active @endif"
                                 href="{{ route('admin.task-forces.index') }}">
-                                📋 Taskforce Master Data
+                                📋 TaskForce Master Data
                             </a>
                             <a class="nav-link @if(request()->routeIs('admin.academic-sessions.*')) active @endif"
                                 href="{{ route('admin.academic-sessions.index') }}">
@@ -229,7 +229,7 @@
                             <div class="nav-header text-uppercase text-muted small fw-bold mt-3 mb-1 px-3">My Portfolio</div>
                             <a class="nav-link @if(request()->routeIs('workload.assigned-task-forces')) active @endif"
                                 href="{{ route('workload.assigned-task-forces') }}">
-                                💼 Assigned Taskforces
+                                💼 Assigned TaskForce
                             </a>
                             <a class="nav-link @if(request()->routeIs('workload.summary')) active @endif"
                                 href="{{ route('workload.summary') }}">
@@ -256,7 +256,7 @@
                             </a>
                             <a class="nav-link @if(request()->routeIs('management.task_distribution')) active @endif"
                                 href="{{ route('management.task_distribution') }}">
-                                📊 Taskforce Distribution
+                                📊 TaskForce Distribution
                             </a>
                             <a class="nav-link @if(request()->routeIs('management.department_comparison')) active @endif"
                                 href="{{ route('management.department_comparison') }}">

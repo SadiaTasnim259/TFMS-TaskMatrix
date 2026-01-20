@@ -73,7 +73,7 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-header bg-white py-3 border-bottom-0">
                     <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-list-ul me-2"></i>Task Force Breakdown
+                        <i class="fas fa-list-ul me-2"></i>TaskForce Breakdown
                     </h6>
                 </div>
                 <div class="card-body p-0">
@@ -81,7 +81,7 @@
                         <table class="table table-hover align-middle mb-0">
                             <thead class="bg-light">
                                 <tr>
-                                    <th class="ps-4">Task Force</th>
+                                    <th class="ps-4">TaskForce</th>
                                     <th>Role</th>
                                     <th class="text-end pe-4">Weightage</th>
                                 </tr>

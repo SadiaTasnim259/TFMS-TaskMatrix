@@ -5,7 +5,7 @@
 @section('content')
     <div class="row align-items-center mb-4">
         <div class="col-md-6">
-            <h1 class="h3 mb-0 text-gray-800">Your Task Force Assignments</h1>
+            <h1 class="h3 mb-0 text-gray-800">Your TaskForce Assignments</h1>
             <p class="text-muted small mb-0">
                 TaskForce you are currently assigned to for this session.
                 @if(isset($currentSession))
@@ -35,7 +35,7 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="bg-light">
                         <tr>
-                            <th class="ps-4">Task Force Name</th>
+                            <th class="ps-4">TaskForce Name</th>
                             <th>Your Role</th>
                             <th>Weightage</th>
                             <th class="text-center pe-4">Status</th>

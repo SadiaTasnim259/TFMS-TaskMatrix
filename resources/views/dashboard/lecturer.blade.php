@@ -106,7 +106,7 @@
                         style="width: 60px; height: 60px;">
                         <i class="fas fa-briefcase fa-2x"></i>
                     </div>
-                    <h5 class="card-title fw-bold">Assigned Taskforces</h5>
+                    <h5 class="card-title fw-bold">Assigned TaskForce</h5>
                     <p class="card-text text-muted small">View the TaskForce you are currently a member of.</p>
                     <a href="{{ route('workload.assigned-task-forces') }}"
                         class="btn btn-outline-primary btn-sm stretched-link">View Portfolio</a>

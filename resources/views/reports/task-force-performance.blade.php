@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Task Force Performance Report')
+@section('title', 'TaskForce Performance Report')
 
 @section('content')
 <div class="container-fluid">
     <!-- Header -->
     <div class="row mb-4">
         <div class="col-md-8">
-            <h1 class="h2">Task Force Performance Report</h1>
+            <h1 class="h2">TaskForce Performance Report</h1>
             <p class="text-muted">{{ $taskForce->name }} - {{ $academicYear }} Semester {{ $semester }}</p>
         </div>
         <div class="col-md-4 text-end">
@@ -23,7 +23,7 @@
     <!-- Task Force Information -->
     <div class="card mb-4">
         <div class="card-header">
-            <h5 class="mb-0"><i class="fas fa-users"></i> Task Force Information</h5>
+            <h5 class="mb-0"><i class="fas fa-users"></i> TaskForce Information</h5>
         </div>
         <div class="card-body">
             <div class="row">
@@ -138,7 +138,7 @@
     <!-- Members List -->
     <div class="card mb-4">
         <div class="card-header">
-            <h5 class="mb-0"><i class="fas fa-user-friends"></i> Task Force Members</h5>
+            <h5 class="mb-0"><i class="fas fa-user-friends"></i> TaskForce Members</h5>
         </div>
         <div class="card-body">
             <div class="row">
@@ -165,7 +165,7 @@
             @else
                 <div class="text-center py-4">
                     <i class="fas fa-users fa-3x text-muted mb-3"></i>
-                    <p class="text-muted">No members assigned to this task force</p>
+                    <p class="text-muted">No members assigned to this TaskForce</p>
                 </div>
             @endif
         </div>

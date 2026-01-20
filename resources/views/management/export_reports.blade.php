@@ -47,7 +47,7 @@
                                         🏢 Department Comparison (Aggregated Stats)
                                     </option>
                                     <option value="taskforce" {{ old('report_type') == 'taskforce' ? 'selected' : '' }}>
-                                        📊 Taskforce Distribution
+                                        📊 TaskForce Distribution
                                     </option>
                                 </select>
                                 @error('report_type')
@@ -125,7 +125,7 @@
 
         /* When input is checked, style the parent div? CSS :has() is modern but let's stick to safe CSS or simple styles */
         /* We can't style the parent based on child easily without :has. 
-                       So just styling the label/input relation is fine. 
-                    */
+                           So just styling the label/input relation is fine. 
+                        */
     </style>
 @endsection

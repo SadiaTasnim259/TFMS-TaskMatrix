@@ -236,7 +236,7 @@
                         <div class="nav-header text-uppercase text-muted small fw-bold mt-3 mb-1 px-3">My Portfolio</div>
                         <a class="nav-link @if(request()->routeIs('workload.assigned-task-forces')) active @endif"
                             href="{{ route('workload.assigned-task-forces') }}">
-                            💼 Assigned Taskforces
+                            💼 Assigned TaskForce
                         </a>
                         <a class="nav-link @if(request()->routeIs('workload.summary')) active @endif"
                             href="{{ route('workload.summary') }}">
