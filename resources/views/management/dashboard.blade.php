@@ -61,12 +61,6 @@
                 </div>
             </div>
 
-
-        </div>
-
-        <div class="row">
-
-
             <!-- Department Comparison Table -->
             <div class="col-lg-6">
                 <div class="card shadow-sm h-100">
@@ -132,6 +126,11 @@
                 }]
             },
             options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
                 scales: {
                     y: {
                         beginAtZero: true,

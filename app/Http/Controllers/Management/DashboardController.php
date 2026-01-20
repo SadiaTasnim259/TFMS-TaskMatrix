@@ -158,18 +158,18 @@ class DashboardController extends Controller
 
         // 2. Aggregate Data for chart and table
         $distributionData = [];
-        $categories = ['Uncategorized'];
+        $categories = ['TaskForce'];
 
         foreach ($departments as $dept) {
             $stats = array_fill_keys($categories, 0);
 
             foreach ($dept->taskForces as $tf) {
                 if ($tf->isActive()) {
-                    $category = $tf->category ?? 'Uncategorized';
+                    $category = $tf->category ?? 'TaskForce';
                     if (in_array($category, $categories)) {
                         $stats[$category]++;
                     } else {
-                        $stats['Uncategorized']++;
+                        $stats['TaskForce']++;
                     }
                 }
             }
@@ -194,7 +194,7 @@ class DashboardController extends Controller
         if ($unassignedCount > 0) {
             $distributionData[] = [
                 'name' => 'Unassigned',
-                'stats' => ['Uncategorized' => $unassignedCount],
+                'stats' => ['TaskForce' => $unassignedCount],
                 'total' => $unassignedCount
             ];
         }
