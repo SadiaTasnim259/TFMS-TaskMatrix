@@ -68,7 +68,7 @@
 
     <!-- Users Table -->
     <div class="card">
-        <div class="table-responsive">
+        <div class="table-responsive" style="overflow: visible;">
             <table class="table table-hover">
                 <thead class="table-light">
                     <tr>
