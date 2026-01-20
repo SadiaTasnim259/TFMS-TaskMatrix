@@ -7,7 +7,15 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="h3 mb-0">Department Task Forces</h1>
-            <p class="text-muted">View and manage task forces assigned to your department</p>
+            <p class="text-muted mb-0">
+                View and manage task forces assigned to your department
+                @if(isset($currentSession))
+                    <span class="badge bg-primary ms-2">
+                        <i class="fas fa-calendar-alt me-1"></i>
+                        {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                    </span>
+                @endif
+            </p>
         </div>
     </div>
 
@@ -15,31 +23,19 @@
     <div class="card mb-4">
         <div class="card-body">
             <form action="{{ route('hod.task-forces.index') }}" method="GET" class="row g-3">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label for="search" class="form-label">Search</label>
                     <input type="text" class="form-control" id="search" name="search" placeholder="Task force name..."
                         value="{{ request('search') }}">
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label for="category" class="form-label">Category</label>
                     <select class="form-select" id="category" name="category">
                         <option value="">-- All Categories --</option>
                         @foreach($categories as $cat)
                             <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>
                                 {{ $cat }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <label for="academic_year" class="form-label">Academic Year</label>
-                    <select class="form-select" id="academic_year" name="academic_year">
-                        <option value="">-- All Sessions --</option>
-                        @foreach($academicYears as $year)
-                            <option value="{{ $year }}" {{ request('academic_year') == $year ? 'selected' : '' }}>
-                                {{ $year }}
                             </option>
                         @endforeach
                     </select>

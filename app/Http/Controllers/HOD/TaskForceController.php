@@ -35,15 +35,18 @@ class TaskForceController extends Controller
 
         $departmentId = $user->department_id;
 
+        // Get current academic session
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+
         // Start query filtering by HOD's department
         $query = TaskForce::active()
             ->whereHas('departments', function ($q) use ($departmentId) {
                 $q->where('departments.id', $departmentId);
             });
 
-        // Filter by Academic Year (Session)
-        if ($request->filled('academic_year')) {
-            $query->where('academic_year', $request->academic_year);
+        // Filter by current academic session only
+        if ($currentSession) {
+            $query->where('academic_year', $currentSession->academic_year);
         }
 
         // Filter by Category
@@ -68,10 +71,9 @@ class TaskForceController extends Controller
         ])->latest()->paginate(10)->withQueryString();
 
         // Data for filters
-        $academicYears = TaskForce::distinct()->orderBy('academic_year', 'desc')->pluck('academic_year');
         $categories = ['Strategic', 'Technical', 'Operational'];
 
-        return view('hod.task_forces.index', compact('taskForces', 'academicYears', 'categories'));
+        return view('hod.task_forces.index', compact('taskForces', 'categories', 'currentSession'));
     }
 
     /**
