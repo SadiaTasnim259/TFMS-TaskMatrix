@@ -24,7 +24,6 @@
                             <tr>
                                 <th>Academic Year</th>
                                 <th>Semester</th>
-                                <th>Status</th>
                                 <th>Duration</th>
                                 <th>Active</th>
                                 <th>Actions</th>
@@ -35,12 +34,6 @@
                                 <tr>
                                     <td class="align-middle fw-bold">{{ $session->academic_year }}</td>
                                     <td class="align-middle">Semester {{ $session->semester }}</td>
-                                    <td class="align-middle">
-                                        <span
-                                            class="badge bg-{{ $session->status === 'published' ? 'success' : ($session->status === 'planning' ? 'warning' : 'secondary') }}">
-                                            {{ ucfirst($session->status) }}
-                                        </span>
-                                    </td>
                                     <td class="align-middle">
                                         {{ $session->start_date->format('d M Y') }} - {{ $session->end_date->format('d M Y') }}
                                     </td>
@@ -90,7 +83,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-4 text-muted">No academic sessions found. Create one
+                                    <td colspan="5" class="text-center py-4 text-muted">No academic sessions found. Create one
                                         to get started.</td>
                                 </tr>
                             @endforelse

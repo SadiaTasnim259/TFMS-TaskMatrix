@@ -71,22 +71,9 @@
                 </div>
 
                 <div class="row">
-                    <!-- Status -->
-                    <div class="col-md-6 mb-3">
-                        <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
-                        <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
-                            <option value="planning" {{ old('status', $academicSession->status ?? '') == 'planning' ? 'selected' : '' }}>Planning</option>
-                            <option value="published" {{ old('status', $academicSession->status ?? '') == 'published' ? 'selected' : '' }}>Published (Active)</option>
-                            <option value="archived" {{ old('status', $academicSession->status ?? '') == 'archived' ? 'selected' : '' }}>Archived</option>
-                        </select>
-                        @error('status')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
                     <!-- Is Active -->
-                    <div class="col-md-6 mb-3 d-flex align-items-center">
-                        <div class="form-check mt-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1"
                                 {{ old('is_active', $academicSession->is_active ?? false) ? 'checked' : '' }}>
                             <label class="form-check-label fw-bold" for="is_active">

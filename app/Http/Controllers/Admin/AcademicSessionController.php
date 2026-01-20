@@ -41,7 +41,6 @@ class AcademicSessionController extends Controller
             'semester' => 'required|integer|in:1,2',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'required|in:planning,published,archived',
         ], [
             'academic_year.regex' => 'Format must be YYYY/YYYY (e.g., 2024/2025)',
         ]);
@@ -68,7 +67,6 @@ class AcademicSessionController extends Controller
                 'semester' => $validated['semester'],
                 'start_date' => $validated['start_date'],
                 'end_date' => $validated['end_date'],
-                'status' => $validated['status'],
                 'is_active' => $isActive,
             ]);
 
@@ -110,7 +108,6 @@ class AcademicSessionController extends Controller
             'semester' => 'required|integer|in:1,2',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'status' => 'required|in:planning,published,archived',
         ]);
 
         try {
@@ -137,8 +134,7 @@ class AcademicSessionController extends Controller
                 'semester' => $validated['semester'],
                 'start_date' => $validated['start_date'],
                 'end_date' => $validated['end_date'],
-                'status' => $validated['status'],
-                'is_active' => $isActive, // Can be set to active, but usually not unset directly unless another takes over
+                'is_active' => $isActive,
             ]);
 
             AuditLog::log(
