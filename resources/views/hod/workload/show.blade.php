@@ -46,37 +46,7 @@
                 </div>
             </div>
 
-            <!-- Lecturer Remarks (UC-500.3) -->
-            <div class="card mb-4 border-info">
-                <div class="card-header bg-info text-white">
-                    <h5 class="card-title mb-0"><i class="fas fa-comment-alt me-2"></i> Lecturer Remarks</h5>
-                </div>
-                <div class="card-body">
-                    @php
-                        // Assuming $staff->workloadSubmissions or similar is available. 
-                        // However, this controller 'App\Http\Controllers\HOD\WorkloadController' logic needs check.
-                        // The 'show' method takes 'Staff $staff'. We need to find the relevant submission.
-                        // Based on previous file reads, it calculates total workload but didn't explicitly pass a 'submission' object.
-                        // Let's check if we can fetch the latest text or if we need to update the controller first.
-                        // Wait, I should verify what $staff has or if I need to load the submission.
-                        // The 'show' method in HOD/WorkloadController calculates workload but doesn't seem to pass a 'submission' variable.
-                        // I'll check HOD/WorkloadController first.
-                        $currentSession = \App\Models\Configuration::where('config_key', 'current_session')->value('config_value');
-                        $currentSubmission = \App\Models\WorkloadSubmission::where('user_id', $staff->id)
-                            ->where('academic_year', $currentSession)
-                            ->latest()
-                            ->first();
-                    @endphp
 
-                    @if($currentSubmission && $currentSubmission->lecturer_remarks)
-                        <p class="fst-italic">"{{ $currentSubmission->lecturer_remarks }}"</p>
-                        <small class="text-muted">Submitted:
-                            {{ $currentSubmission->submitted_at ? $currentSubmission->submitted_at->diffForHumans() : 'N/A' }}</small>
-                    @else
-                        <p class="text-muted small fst-italic">No remarks submitted by lecturer.</p>
-                    @endif
-                </div>
-            </div>
         </div>
 
         <!-- Task Force List -->
