@@ -74,7 +74,7 @@ class UserController extends Controller
         }
 
         // Sort
-        $sortBy = $request->get('sort', 'created_at');
+        $sortBy = $request->get('sort', 'last_login_at');
         // Handle sort by role name or department name if needed, else default to column
         if ($sortBy === 'role') {
             // Basic sort, can be improved with joins
