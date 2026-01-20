@@ -36,9 +36,11 @@
                     <select name="role" class="form-select">
                         <option value="">All Roles</option>
                         @foreach($roles as $role)
-                            <option value="{{ $role->name }}" @if(request('role') === $role->name) selected @endif>
-                                {{ $role->name }}
-                            </option>
+                            @if($role->name !== 'TaskForceOwner')
+                                <option value="{{ $role->name }}" @if(request('role') === $role->name) selected @endif>
+                                    {{ $role->name }}
+                                </option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
