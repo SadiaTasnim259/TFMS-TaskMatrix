@@ -13,9 +13,6 @@
             <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i> Create New Staff
             </a>
-            <a href="{{ route('admin.users.import') }}" class="btn btn-outline-secondary ms-2">
-                <i class="fas fa-file-import me-2"></i> Import
-            </a>
         </div>
     </div>
 
