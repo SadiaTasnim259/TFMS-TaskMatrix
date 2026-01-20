@@ -35,14 +35,19 @@
                     <label for="status" class="form-label">Status</label>
                     <select class="form-select" id="status" name="status">
                         <option value="">-- All Status --</option>
-                        <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Active</option>
-                        <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Inactive</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
                     </select>
                 </div>
                 <div class="col-md-2 d-grid">
                     <button type="submit" class="btn btn-info w-100">
                         <i class="fas fa-search"></i> Filter
                     </button>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <a href="{{ route('admin.task-forces.index') }}" class="btn btn-secondary w-100">
+                        <i class="fas fa-redo"></i> Reset
+                    </a>
                 </div>
             </form>
         </div>
@@ -165,7 +170,7 @@
                     Showing {{ $taskForces->firstItem() ?? 0 }} to {{ $taskForces->lastItem() ?? 0 }}
                     of {{ $taskForces->total() }} task forces
                 </small>
-                {{ $taskForces->links() }}
+                {{ $taskForces->withQueryString()->links() }}
             </div>
         @endif
     </div>

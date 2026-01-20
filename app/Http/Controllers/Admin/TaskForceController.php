@@ -50,9 +50,9 @@ class TaskForceController extends Controller
             $query->where('category', $request->category);
         }
 
-        // Filter by status
-        if ($request->has('status')) {
-            $query->where('active', $request->status === 'active');
+        // Filter by status (only if a specific status is selected)
+        if ($request->filled('status')) {
+            $query->where('active', $request->status == '1');
         }
 
         // Sort
