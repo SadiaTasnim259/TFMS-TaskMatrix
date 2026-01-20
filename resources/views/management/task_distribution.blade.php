@@ -5,7 +5,15 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h1 class="h3 section-title mb-0">Taskforce Distribution Overview</h1>
-                <p class="text-muted small mb-0">Distribution of active task forces across departments by category.</p>
+                <p class="text-muted small mb-0">
+                    Distribution of active task forces across departments.
+                    @if(isset($currentSession))
+                        <span class="badge bg-primary ms-2">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                        </span>
+                    @endif
+                </p>
             </div>
             <div class="badge bg-primary fs-6 shadow-sm">
                 Total Active Task Forces: {{ $totalTaskForces }}

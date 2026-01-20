@@ -5,7 +5,15 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h1 class="h3 section-title mb-0">Export Summary Reports</h1>
-                <p class="text-muted small mb-0">Generate and download system-wide reports.</p>
+                <p class="text-muted small mb-0">
+                    Generate and download system-wide reports.
+                    @if(isset($currentSession))
+                        <span class="badge bg-primary ms-2">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                        </span>
+                    @endif
+                </p>
             </div>
         </div>
 
@@ -117,7 +125,7 @@
 
         /* When input is checked, style the parent div? CSS :has() is modern but let's stick to safe CSS or simple styles */
         /* We can't style the parent based on child easily without :has. 
-                   So just styling the label/input relation is fine. 
-                */
+                       So just styling the label/input relation is fine. 
+                    */
     </style>
 @endsection

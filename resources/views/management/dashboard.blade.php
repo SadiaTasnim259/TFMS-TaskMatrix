@@ -3,7 +3,15 @@
 @section('content')
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h3 section-title mb-0">Executive Dashboard</h1>
+            <div>
+                <h1 class="h3 section-title mb-0">Executive Dashboard</h1>
+                @if(isset($currentSession))
+                    <span class="badge bg-primary mt-1">
+                        <i class="fas fa-calendar-alt me-1"></i>
+                        {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                    </span>
+                @endif
+            </div>
             <a href="{{ route('management.export') }}" class="btn btn-secondary shadow-sm">
                 <i class="fas fa-download fa-sm text-white-50 me-2"></i> Export Report
             </a>

@@ -36,12 +36,29 @@ class DashboardController extends Controller
 
     private function getDashboardData()
     {
+        // Get current academic session
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        $currentYear = $currentSession ? $currentSession->academic_year : null;
 
-
-        $departments = Department::withCount('taskForces')->get();
+        $departments = Department::withCount([
+            'taskForces' => function ($query) use ($currentYear) {
+                if ($currentYear) {
+                    $query->where('academic_year', $currentYear);
+                }
+            }
+        ])->get();
 
         // 2. Workload Fairness & Department Comparison
-        $staffMembers = User::with(['taskForces', 'department'])
+        // Calculate workload from task forces in current session only
+        $staffMembers = User::with(['department'])
+            ->withSum([
+                'taskForces' => function ($q) use ($currentYear) {
+                    $q->where('active', true);
+                    if ($currentYear) {
+                        $q->where('academic_year', $currentYear);
+                    }
+                }
+            ], 'default_weightage')
             ->where('is_active', true)
             ->whereNotNull('department_id')
             ->get();
@@ -55,8 +72,8 @@ class DashboardController extends Controller
         $departmentStats = [];
 
         foreach ($staffMembers as $staff) {
-            // Calculate total weightage
-            $totalWeightage = $staff->calculateTotalWorkload();
+            // Use the aggregated sum instead of calculateTotalWorkload
+            $totalWeightage = $staff->task_forces_sum_default_weightage ?? 0;
 
             $status = $this->workloadService->calculateStatus($totalWeightage);
 
@@ -91,7 +108,8 @@ class DashboardController extends Controller
         return compact(
             'departments',
             'fairnessStats',
-            'departmentStats'
+            'departmentStats',
+            'currentSession'
         );
     }
 
@@ -116,14 +134,17 @@ class DashboardController extends Controller
 
     public function taskDistribution()
     {
-        // 1. Fetch Departments with their Task Forces
-        // We need to count task forces by category for each department.
-        // Since TaskForce <-> Department is Many-to-Many
+        // Get current academic session
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        $currentYear = $currentSession ? $currentSession->academic_year : null;
 
+        // 1. Fetch Departments with their Task Forces (filtered by current session)
         $departments = Department::with([
-            'taskForces' => function ($query) {
-                // 'category' column is missing in DB despite migration. Selecting only valid columns.
-                $query->select('task_forces.id', 'task_forces.active');
+            'taskForces' => function ($query) use ($currentYear) {
+                $query->select('task_forces.id', 'task_forces.active', 'task_forces.academic_year');
+                if ($currentYear) {
+                    $query->where('academic_year', $currentYear);
+                }
             }
         ])->get();
 
@@ -160,12 +181,13 @@ class DashboardController extends Controller
             ];
         }
 
-        return view('management.task_distribution', compact('distributionData', 'categories', 'totalTaskForces'));
+        return view('management.task_distribution', compact('distributionData', 'categories', 'totalTaskForces', 'currentSession'));
     }
 
     public function exportReports()
     {
-        return view('management.export_reports');
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        return view('management.export_reports', compact('currentSession'));
     }
 
     public function generateReport(Request $request)
@@ -194,41 +216,54 @@ class DashboardController extends Controller
         if ($format === 'pdf') {
             $workloadService = $this->workloadService;
 
+            // Get current academic session
+            $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+            $currentYear = $currentSession ? $currentSession->academic_year : null;
+
             if ($type === 'workload') {
                 $users = User::with('department')
                     ->withSum([
-                        'taskForces' => function ($q) {
+                        'taskForces' => function ($q) use ($currentYear) {
                             $q->where('task_forces.active', true);
+                            if ($currentYear) {
+                                $q->where('task_forces.academic_year', $currentYear);
+                            }
                         }
                     ], 'default_weightage')
                     ->where('is_active', true)
                     ->whereNotNull('department_id')
                     ->get();
 
-                $pdf = Pdf::loadView('management.pdf.workload', compact('users', 'workloadService'));
+                $pdf = Pdf::loadView('management.pdf.workload', compact('users', 'workloadService', 'currentSession'));
 
             } elseif ($type === 'department') {
                 $departments = Department::with([
-                    'staff' => function ($query) {
+                    'staff' => function ($query) use ($currentYear) {
                         $query->where('is_active', true)
                             ->withSum([
-                                'taskForces' => function ($q) {
+                                'taskForces' => function ($q) use ($currentYear) {
                                     $q->where('task_forces.active', true);
+                                    if ($currentYear) {
+                                        $q->where('task_forces.academic_year', $currentYear);
+                                    }
                                 }
                             ], 'default_weightage');
                     }
                 ])->get();
 
-                $pdf = Pdf::loadView('management.pdf.department', compact('departments', 'workloadService'));
+                $pdf = Pdf::loadView('management.pdf.department', compact('departments', 'workloadService', 'currentSession'));
 
             } elseif ($type === 'taskforce') {
                 $departments = Department::withCount([
-                    'taskForces' => function ($query) {
+                    'taskForces' => function ($query) use ($currentYear) {
                         $query->where('task_forces.active', true);
+                        if ($currentYear) {
+                            $query->where('task_forces.academic_year', $currentYear);
+                        }
                     }
                 ])->get();
 
-                $pdf = Pdf::loadView('management.pdf.taskforce', compact('departments'));
+                $pdf = Pdf::loadView('management.pdf.taskforce', compact('departments', 'currentSession'));
             }
 
             return $pdf->download($filename . '.pdf');
@@ -239,12 +274,28 @@ class DashboardController extends Controller
 
     public function departmentComparison()
     {
-        $departments = Department::with(['head', 'staff'])->get(); // Eager load head and staff
+        // Get current academic session
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        $currentYear = $currentSession ? $currentSession->academic_year : null;
+
+        $departments = Department::with([
+            'head',
+            'staff' => function ($q) use ($currentYear) {
+                $q->withSum([
+                    'taskForces' => function ($query) use ($currentYear) {
+                        $query->where('active', true);
+                        if ($currentYear) {
+                            $query->where('academic_year', $currentYear);
+                        }
+                    }
+                ], 'default_weightage');
+            }
+        ])->get();
 
         $comparisonData = [];
 
         foreach ($departments as $dept) {
-            $activeStaff = $dept->staff->where('is_active', true); // Use is_active from User model
+            $activeStaff = $dept->staff->where('is_active', true);
             $staffCount = $activeStaff->count();
             $totalWorkload = 0;
 
@@ -256,7 +307,7 @@ class DashboardController extends Controller
             ];
 
             foreach ($activeStaff as $staff) {
-                $workload = $staff->calculateTotalWorkload();
+                $workload = $staff->task_forces_sum_default_weightage ?? 0;
                 $totalWorkload += $workload;
 
                 $status = $this->workloadService->calculateStatus($workload);
@@ -277,6 +328,6 @@ class DashboardController extends Controller
             ];
         }
 
-        return view('management.department_comparison', compact('comparisonData'));
+        return view('management.department_comparison', compact('comparisonData', 'currentSession'));
     }
 }

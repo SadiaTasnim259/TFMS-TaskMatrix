@@ -13,18 +13,26 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class ManagementWorkloadExport implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
     protected $workloadService;
+    protected $currentYear;
 
     public function __construct()
     {
         $this->workloadService = new WorkloadService();
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        $this->currentYear = $currentSession ? $currentSession->academic_year : null;
     }
 
     public function collection()
     {
+        $currentYear = $this->currentYear;
+
         return User::with('department')
             ->withSum([
-                'taskForces' => function ($q) {
+                'taskForces' => function ($q) use ($currentYear) {
                     $q->where('task_forces.active', true);
+                    if ($currentYear) {
+                        $q->where('task_forces.academic_year', $currentYear);
+                    }
                 }
             ], 'default_weightage')
             ->where('is_active', true)

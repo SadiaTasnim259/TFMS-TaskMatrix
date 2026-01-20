@@ -5,7 +5,15 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h1 class="h3 section-title mb-0">Department Comparison Overview</h1>
-                <p class="text-muted small mb-0">Compare workload metrics and staff distribution across all departments.</p>
+                <p class="text-muted small mb-0">
+                    Compare workload metrics and staff distribution across all departments.
+                    @if(isset($currentSession))
+                        <span class="badge bg-primary ms-2">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                        </span>
+                    @endif
+                </p>
             </div>
         </div>
 

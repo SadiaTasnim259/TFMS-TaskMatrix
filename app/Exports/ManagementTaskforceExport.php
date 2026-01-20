@@ -11,11 +11,24 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ManagementTaskforceExport implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
+    protected $currentYear;
+
+    public function __construct()
+    {
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        $this->currentYear = $currentSession ? $currentSession->academic_year : null;
+    }
+
     public function collection()
     {
+        $currentYear = $this->currentYear;
+
         return Department::withCount([
-            'taskForces' => function ($query) {
+            'taskForces' => function ($query) use ($currentYear) {
                 $query->where('task_forces.active', true);
+                if ($currentYear) {
+                    $query->where('task_forces.academic_year', $currentYear);
+                }
             }
         ])->get();
     }
