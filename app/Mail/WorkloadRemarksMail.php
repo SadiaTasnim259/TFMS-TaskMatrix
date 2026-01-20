@@ -42,7 +42,7 @@ class WorkloadRemarksMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.workload.remarks',
+            view: 'emails.workload.remarks',
         );
     }
 

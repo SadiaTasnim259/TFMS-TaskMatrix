@@ -1,17 +1,25 @@
-<x-mail::message>
-    # Workload Remarks Submitted
+<!DOCTYPE html>
+<html>
 
-    **Lecturer:** {{ $lecturer->name }} ({{ $lecturer->email }})
-    **Department:** {{ $lecturer->department->name ?? 'N/A' }}
+<head>
+    <title>Workload Remarks Submitted</title>
+</head>
 
-    ## Remarks
+<body>
+    <h1>Workload Remarks Submitted</h1>
+    <p><strong>Lecturer:</strong> {{ $lecturer->name }} ({{ $lecturer->email }})</p>
+    <p><strong>Department:</strong> {{ $lecturer->department->name ?? 'N/A' }}</p>
 
-    {{ $remarks }}
+    <p><strong>Remarks:</strong></p>
+    <p style="white-space: pre-wrap;">{{ $remarks }}</p>
 
-    <x-mail::button :url="route('login')">
-        Login to TFMS
-    </x-mail::button>
+    <p>
+        <a href="{{ route('login') }}"
+            style="background-color: #4e73df; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Login
+            to TFMS</a>
+    </p>
 
-    Thanks,<br>
-    {{ config('app.name') }}
-</x-mail::message>
+    <p>Thanks,<br>{{ config('app.name') }}</p>
+</body>
+
+</html>
