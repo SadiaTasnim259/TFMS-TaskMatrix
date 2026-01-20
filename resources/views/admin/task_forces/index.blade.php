@@ -4,7 +4,7 @@
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
         <div>
             <p class="text-uppercase text-muted fw-semibold small mb-1">Admin • TaskForce</p>
-            <h1 class="h3 section-title mb-0">Task Force Registry</h1>
+            <h1 class="h3 section-title mb-0">TaskForce Registry</h1>
             <p class="text-muted mb-0">
                 Manage TaskForce, ownership, and departmental assignments.
                 @if(isset($currentSession))
@@ -16,7 +16,7 @@
             </p>
         </div>
         <a href="{{ route('admin.task-forces.create') }}" class="btn btn-primary shadow-sm">
-            <i class="fas fa-plus"></i> Create Task Force
+            <i class="fas fa-plus"></i> Create TaskForce
         </a>
     </div>
 
@@ -27,7 +27,7 @@
             <form action="{{ route('admin.task-forces.index') }}" method="GET" class="row g-3 align-items-end">
                 <div class="col-md-4">
                     <label for="search" class="form-label">Search</label>
-                    <input type="text" class="form-control" id="search" name="search" placeholder="Task force name..."
+                    <input type="text" class="form-control" id="search" name="search" placeholder="TaskForce name..."
                         value="{{ request('search') }}">
                 </div>
 
@@ -59,7 +59,7 @@
                 <table class="table table-hover mb-0 align-middle">
                     <thead>
                         <tr>
-                            <th>Task Force</th>
+                            <th>TaskForce</th>
 
 
                             <th>Departments</th>
@@ -113,7 +113,7 @@
                                             </li>
                                             <li>
                                                 <a href="{{ route('admin.task-forces.edit', $taskForce) }}" class="dropdown-item">
-                                                    <i class="fas fa-edit me-2 text-warning"></i> Edit Task Force
+                                                    <i class="fas fa-edit me-2 text-warning"></i> Edit TaskForce
                                                 </a>
                                             </li>
                                             <li>
@@ -158,7 +158,7 @@
                     <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px;"></i>
                     <p>No TaskForce found.</p>
                     <a href="{{ route('admin.task-forces.create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus"></i> Create First Task Force
+                        <i class="fas fa-plus"></i> Create First TaskForce
                     </a>
                 </div>
             @endif
@@ -180,11 +180,11 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Delete Task Force</h5>
+                    <h5 class="modal-title">Delete TaskForce</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete this task force?</p>
+                    <p>Are you sure you want to delete this TaskForce?</p>
                     <p class="text-danger"><small><strong>This action cannot be undone.</strong></small></p>
                 </div>
                 <div class="modal-footer">
@@ -192,7 +192,7 @@
                     <form id="deleteForm" method="POST" style="display: inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete Task Force</button>
+                        <button type="submit" class="btn btn-danger">Delete TaskForce</button>
                     </form>
                 </div>
             </div>
