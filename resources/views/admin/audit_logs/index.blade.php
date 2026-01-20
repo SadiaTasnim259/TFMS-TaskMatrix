@@ -35,11 +35,11 @@
                     <label class="form-label">Action</label>
                     <select name="action" class="form-select">
                         <option value="">All Actions</option>
-                        @foreach($actions as $action)
-                            <option value="{{ $action }}" @if(request('action') === $action) selected @endif>
-                                {{ $action }}
-                            </option>
-                        @endforeach
+                            @foreach($actions as $key => $label)
+                                <option value="{{ $key }}" @if(request('action') === $key) selected @endif>
+                                    {{ $label }}
+                                </option>
+                            @endforeach
                     </select>
                 </div>
 
