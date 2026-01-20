@@ -36,7 +36,7 @@
                     <div class="col-md-6">
                         <h6 class="text-muted">Weightage</h6>
                         <p class="mb-0">
-                            <span class="badge bg-warning">{{ $taskForce->weightage ?? '0' }}</span>
+                            <span class="badge bg-warning">{{ $taskForce->default_weightage ?? '0' }}</span>
                         </p>
                     </div>
                 </div>
