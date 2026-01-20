@@ -40,7 +40,7 @@
                         style="width: 60px; height: 60px; color: #6610f2;">
                         <i class="fas fa-project-diagram fa-2x"></i>
                     </div>
-                    <h5 class="card-title fw-bold">View Faculty Taskforces</h5>
+                    <h5 class="card-title fw-bold">View Faculty TaskForce</h5>
                     <p class="card-text text-muted small">Access the master directory of all TaskForce.</p>
                     <a href="{{ route('psm.task-forces.index') }}" class="btn btn-outline-primary btn-sm stretched-link"
                         style="border-color: #6610f2; color: #6610f2;">View Directory</a>

@@ -224,7 +224,7 @@
                         </a>
                         <a class="nav-link @if(request()->routeIs('psm.task-forces.*') && !request()->routeIs('psm.task-forces.requests')) active @endif"
                             href="{{ route('psm.task-forces.index') }}">
-                            📋 View Faculty Taskforces
+                            📋 View Faculty TaskForce
                         </a>
                         <a class="nav-link @if(request()->routeIs('psm.task-forces.requests')) active @endif"
                             href="{{ route('psm.task-forces.requests') }}">
