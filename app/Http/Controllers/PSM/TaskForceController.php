@@ -77,12 +77,22 @@ class TaskForceController extends Controller
      */
     public function indexRequests()
     {
-        $pendingRequests = MembershipRequest::where('status', 'pending')
-            ->with(['taskForce', 'user', 'requester'])
-            ->orderBy('created_at', 'asc')
-            ->get();
+        // Get current academic session
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
 
-        return view('psm.task_forces.requests', compact('pendingRequests'));
+        $query = MembershipRequest::where('status', 'pending')
+            ->with(['taskForce', 'user', 'requester']);
+
+        // Filter by current academic session only
+        if ($currentSession) {
+            $query->whereHas('taskForce', function ($q) use ($currentSession) {
+                $q->where('academic_year', $currentSession->academic_year);
+            });
+        }
+
+        $pendingRequests = $query->orderBy('created_at', 'asc')->get();
+
+        return view('psm.task_forces.requests', compact('pendingRequests', 'currentSession'));
     }
 
     /**

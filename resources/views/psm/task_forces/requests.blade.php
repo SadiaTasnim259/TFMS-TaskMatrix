@@ -5,7 +5,18 @@
 @section('content')
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Review Departmental Submissions</h1>
+            <div>
+                <h1 class="h3 mb-0 text-gray-800">Review Departmental Submissions</h1>
+                <p class="text-muted mb-0">
+                    Process pending membership requests from departments.
+                    @if(isset($currentSession))
+                        <span class="badge bg-primary ms-2">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                        </span>
+                    @endif
+                </p>
+            </div>
         </div>
 
         @if($pendingRequests->count() > 0)
