@@ -5,7 +5,15 @@
         <div>
             <p class="text-uppercase text-muted fw-semibold small mb-1">Admin • Task Forces</p>
             <h1 class="h3 section-title mb-0">Task Force Registry</h1>
-            <p class="text-muted mb-0">Manage task forces, ownership, and departmental assignments.</p>
+            <p class="text-muted mb-0">
+                Manage task forces, ownership, and departmental assignments.
+                @if(isset($currentSession))
+                    <span class="badge bg-primary ms-2">
+                        <i class="fas fa-calendar-alt me-1"></i>
+                        {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                    </span>
+                @endif
+            </p>
         </div>
         <a href="{{ route('admin.task-forces.create') }}" class="btn btn-primary shadow-sm">
             <i class="fas fa-plus"></i> Create Task Force

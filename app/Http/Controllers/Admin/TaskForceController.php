@@ -27,12 +27,22 @@ class TaskForceController extends Controller
     {
         $this->authorize('viewAny', TaskForce::class);
 
+        // Get current academic session
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+
         $query = TaskForce::with('departments');
+
+        // Filter by current academic session only
+        if ($currentSession) {
+            $query->where('academic_year', $currentSession->academic_year);
+        }
 
         // Search by name
         if ($request->has('search') && $request->search) {
-            $query->where('name', 'like', '%' . $request->search . '%')
-                ->orWhere('task_force_id', 'like', '%' . $request->search . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('task_force_id', 'like', '%' . $request->search . '%');
+            });
         }
 
         // Filter by category
@@ -53,7 +63,7 @@ class TaskForceController extends Controller
         $taskForces = $query->paginate(25);
         $categories = $this->getCategories();
 
-        return view('admin.task_forces.index', compact('taskForces', 'categories'));
+        return view('admin.task_forces.index', compact('taskForces', 'categories', 'currentSession'));
     }
 
     /**
