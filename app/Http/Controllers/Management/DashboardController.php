@@ -138,39 +138,39 @@ class DashboardController extends Controller
         $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
         $currentYear = $currentSession ? $currentSession->academic_year : null;
 
-        // 1. Fetch Departments with their Task Forces (filtered by current session)
+        // Get total count of ALL active task forces from current session
+        $totalTaskForces = TaskForce::where('active', true)
+            ->when($currentYear, function ($query) use ($currentYear) {
+                $query->where('academic_year', $currentYear);
+            })
+            ->count();
+
+        // 1. Fetch Departments with their Task Forces (filtered by current session and active only)
         $departments = Department::with([
             'taskForces' => function ($query) use ($currentYear) {
-                $query->select('task_forces.id', 'task_forces.active', 'task_forces.academic_year');
+                $query->select('task_forces.id', 'task_forces.active', 'task_forces.academic_year')
+                    ->where('task_forces.active', true);
                 if ($currentYear) {
-                    $query->where('academic_year', $currentYear);
+                    $query->where('task_forces.academic_year', $currentYear);
                 }
             }
         ])->get();
 
-        // 2. Aggregate Data
-        // Structure: ['DeptName' => ['Academic' => 5, 'Research' => 2, ...]]
+        // 2. Aggregate Data for chart and table
         $distributionData = [];
-        // Only showing 'Uncategorized' as DB is missing category column currently
         $categories = ['Uncategorized'];
 
-        // Initialize totals for Summary Card
-        $totalTaskForces = 0;
-
         foreach ($departments as $dept) {
-            $stats = array_fill_keys($categories, 0); // Initialize all cats to 0
+            $stats = array_fill_keys($categories, 0);
 
             foreach ($dept->taskForces as $tf) {
-                if ($tf->isActive()) { // Only count active ones
-                    // Fallback to 'Uncategorized' since column is missing
+                if ($tf->isActive()) {
                     $category = $tf->category ?? 'Uncategorized';
-
                     if (in_array($category, $categories)) {
                         $stats[$category]++;
                     } else {
                         $stats['Uncategorized']++;
                     }
-                    $totalTaskForces++;
                 }
             }
 
@@ -178,6 +178,24 @@ class DashboardController extends Controller
                 'name' => $dept->name,
                 'stats' => $stats,
                 'total' => array_sum($stats)
+            ];
+        }
+
+        // 3. Count Unassigned Task Forces (not assigned to any department)
+        $unassignedQuery = TaskForce::where('active', true)
+            ->doesntHave('departments');
+
+        if ($currentYear) {
+            $unassignedQuery->where('academic_year', $currentYear);
+        }
+
+        $unassignedCount = $unassignedQuery->count();
+
+        if ($unassignedCount > 0) {
+            $distributionData[] = [
+                'name' => 'Unassigned',
+                'stats' => ['Uncategorized' => $unassignedCount],
+                'total' => $unassignedCount
             ];
         }
 

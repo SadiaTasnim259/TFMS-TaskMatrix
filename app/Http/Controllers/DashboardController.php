@@ -90,9 +90,18 @@ class DashboardController extends Controller
             // Management Dashboard KPIs
             $totalStaff = \App\Models\User::whereNotNull('department_id')->count();
             $totalDepartments = \App\Models\Department::count();
-            $activeTaskForces = \App\Models\TaskForce::where('active', true)->count();
 
-            return view('dashboard.management', compact('totalStaff', 'totalDepartments', 'activeTaskForces'));
+            // Get current academic session
+            $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+
+            // Count only active task forces from current session
+            $activeTaskForces = \App\Models\TaskForce::where('active', true)
+                ->when($currentSession, function ($query) use ($currentSession) {
+                    $query->where('academic_year', $currentSession->academic_year);
+                })
+                ->count();
+
+            return view('dashboard.management', compact('totalStaff', 'totalDepartments', 'activeTaskForces', 'currentSession'));
         } else {
             return view('layouts.dashboard'); // Fallback
         }

@@ -8,7 +8,15 @@
         <div class="col-md-8">
             <span class="badge badge-soft mb-2">Faculty Management</span>
             <h1 class="h2 section-title">Executive Dashboard</h1>
-            <p class="text-muted">View faculty-wide summaries, compare departments, and export executive reports.</p>
+            <p class="text-muted mb-0">
+                View faculty-wide summaries, compare departments, and export executive reports.
+                @if(isset($currentSession))
+                    <span class="badge bg-primary ms-2">
+                        <i class="fas fa-calendar-alt me-1"></i>
+                        {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                    </span>
+                @endif
+            </p>
         </div>
         <div class="col-md-4">
             <div class="card text-white border-0 shadow-sm"
