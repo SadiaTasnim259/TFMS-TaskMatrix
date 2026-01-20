@@ -8,7 +8,15 @@
         <div class="col-md-8">
             <span class="badge badge-soft mb-2">Lecturer</span>
             <h1 class="h2 section-title">My Workload Portfolio</h1>
-            <p class="text-muted">View your assigned task forces, workload summary, and submit remarks to your HOD.</p>
+            <p class="text-muted mb-0">
+                View your assigned task forces, workload summary, and submit remarks to your HOD.
+                @if(isset($currentSession))
+                    <span class="badge bg-primary ms-2">
+                        <i class="fas fa-calendar-alt me-1"></i>
+                        {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                    </span>
+                @endif
+            </p>
         </div>
         <div class="col-md-4">
             <div class="card text-white border-0 shadow-sm"

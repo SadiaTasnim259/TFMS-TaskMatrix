@@ -76,16 +76,31 @@ class DashboardController extends Controller
         } elseif ($user->isPSM()) {
             return view('dashboard.psm');
         } elseif ($user->isLecturer()) {
-            // Calculate Dashboard Data
-            $totalWorkload = $user->calculateTotalWorkload();
+            // Get current academic session
+            $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+            $currentYear = $currentSession ? $currentSession->academic_year : null;
+
+            // Calculate Dashboard Data - filtered by current session
+            $totalWorkload = $user->taskForces()
+                ->where('active', true)
+                ->when($currentYear, function ($query) use ($currentYear) {
+                    $query->where('academic_year', $currentYear);
+                })
+                ->sum('default_weightage');
+
             $status = $workloadService->calculateStatus($totalWorkload);
             $statusColor = $workloadService->getStatusColor($status);
-            $activeTasksCount = $user->taskForces()->where('active', true)->count();
-            // Thresholds for progress bar context if needed (optional)
+
+            $activeTasksCount = $user->taskForces()
+                ->where('active', true)
+                ->when($currentYear, function ($query) use ($currentYear) {
+                    $query->where('academic_year', $currentYear);
+                })
+                ->count();
+
             $maxWeightage = (float) (\App\Models\Configuration::where('config_key', 'max_weightage')->value('config_value') ?? 20);
 
-
-            return view('dashboard.lecturer', compact('totalWorkload', 'status', 'statusColor', 'activeTasksCount', 'maxWeightage'));
+            return view('dashboard.lecturer', compact('totalWorkload', 'status', 'statusColor', 'activeTasksCount', 'maxWeightage', 'currentSession'));
         } elseif ($user->hasRole('management')) {
             // Management Dashboard KPIs
             $totalStaff = \App\Models\User::whereNotNull('department_id')->count();
