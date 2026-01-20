@@ -62,9 +62,6 @@
                         <h6 class="text-muted">Number of Departments</h6>
                         <p class="mb-0">
                             <strong>{{ $taskForce->departments->count() }}</strong>
-                            <a href="{{ route('admin.task-forces.assign-departments.form', $taskForce) }}" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-edit"></i> Manage
-                            </a>
                         </p>
                     </div>
                 </div>
