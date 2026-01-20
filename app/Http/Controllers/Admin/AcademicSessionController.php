@@ -166,6 +166,13 @@ class AcademicSessionController extends Controller
             return back()->with('error', 'Cannot delete the active academic session.');
         }
 
+        // Check for associated task forces
+        $taskForceCount = \App\Models\TaskForce::where('academic_year', $academicSession->academic_year)->count();
+
+        if ($taskForceCount > 0) {
+            return back()->with('error', "Cannot delete this session. There are {$taskForceCount} task force(s) associated with {$academicSession->academic_year}. Please delete or reassign them first.");
+        }
+
         try {
             $academicSession->delete();
             return redirect()->route('admin.academic-sessions.index')
