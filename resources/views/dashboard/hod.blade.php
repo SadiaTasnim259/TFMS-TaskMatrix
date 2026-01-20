@@ -6,7 +6,8 @@
     <!-- Header Section -->
     <div class="row mb-4 align-items-center">
         <div class="col-md-8">
-            <span class="badge badge-soft mb-2">Head of Department</span>
+            <span class="badge badge-soft mb-2">{{ Auth::user()->department->name ?? 'Department' }} Head of
+                Department</span>
             <h1 class="h2 section-title">Department Leadership</h1>
             <p class="text-muted">Balance workload, curate task force membership, and submit to PSM with confidence.</p>
         </div>
