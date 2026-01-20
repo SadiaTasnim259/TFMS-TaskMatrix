@@ -38,8 +38,7 @@
                             <th class="ps-4">Task Force Name</th>
                             <th>Your Role</th>
                             <th>Weightage</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-end pe-4">Actions</th>
+                            <th class="text-center pe-4">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,23 +56,17 @@
                                 <td>
                                     <span class="fw-semibold">{{ $tf->default_weightage ?? '-' }}</span>
                                 </td>
-                                <td class="text-center">
+                                <td class="text-center pe-4">
                                     @if($tf->is_locked)
                                         <span class="badge bg-warning text-dark"><i class="fas fa-lock me-1"></i> Locked</span>
                                     @else
                                         <span class="badge bg-success">Active</span>
                                     @endif
                                 </td>
-                                <td class="text-end pe-4">
-                                    {{-- Placeholder for future details view --}}
-                                    <button class="btn btn-sm btn-light text-muted" disabled title="View Details (Coming Soon)">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-5">
+                                <td colspan="4" class="text-center py-5">
                                     <div class="mb-3">
                                         <i class="fas fa-clipboard-check fa-3x text-muted opacity-25"></i>
                                     </div>
