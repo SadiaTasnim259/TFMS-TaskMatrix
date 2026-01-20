@@ -15,9 +15,17 @@ class TaskForceController extends Controller
      */
     public function index(Request $request)
     {
+        // Get current academic session
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+
         $query = TaskForce::active()
             ->with(['leader', 'departments'])
             ->withCount('members');
+
+        // Filter by current academic session only
+        if ($currentSession) {
+            $query->where('academic_year', $currentSession->academic_year);
+        }
 
         // Search
         if ($request->has('search') && $request->search) {
@@ -28,15 +36,17 @@ class TaskForceController extends Controller
             });
         }
 
-        // Filter by Academic Year
-        if ($request->has('year') && $request->year) {
-            $query->where('academic_year', $request->year);
+        // Filter by Department
+        if ($request->has('department_id') && $request->department_id) {
+            $query->whereHas('departments', function ($q) use ($request) {
+                $q->where('departments.id', $request->department_id);
+            });
         }
 
         $taskForces = $query->orderBy('created_at', 'desc')->paginate(10);
         $departments = \App\Models\Department::orderBy('name')->get();
 
-        return view('psm.task_forces.index', compact('taskForces', 'departments'));
+        return view('psm.task_forces.index', compact('taskForces', 'departments', 'currentSession'));
     }
 
     /**

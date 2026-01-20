@@ -6,7 +6,15 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="h3 mb-0 text-gray-800">Faculty Task Force Directory</h1>
-            <p class="text-muted">View and manage all task forces across departments.</p>
+            <p class="text-muted mb-0">
+                View and manage all task forces across departments.
+                @if(isset($currentSession))
+                    <span class="badge bg-primary ms-2">
+                        <i class="fas fa-calendar-alt me-1"></i>
+                        {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                    </span>
+                @endif
+            </p>
         </div>
 
     </div>
