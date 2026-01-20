@@ -238,7 +238,7 @@
 
         <!-- Pagination -->
         <div class="card-footer">
-            {{ $users->links('pagination::bootstrap-4') }}
+            {{ $users->withQueryString()->links('pagination::bootstrap-4') }}
         </div>
     </div>
 

@@ -62,7 +62,7 @@ class UserController extends Controller
         }
 
         // Filter by status
-        if ($request->has('status')) {
+        if ($request->has('status') && $request->status) {
             if ($request->status === 'locked') {
                 $query->whereNotNull('locked_until')
                     ->where('locked_until', '>', now());
@@ -70,6 +70,8 @@ class UserController extends Controller
                 $query->where('is_active', true);
             } elseif ($request->status === 'inactive') {
                 $query->where('is_active', false);
+            } elseif ($request->status === 'must_change') {
+                $query->where('is_first_login', true);
             }
         }
 
