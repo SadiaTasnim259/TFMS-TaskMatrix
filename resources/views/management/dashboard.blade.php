@@ -12,9 +12,6 @@
                     </span>
                 @endif
             </div>
-            <a href="{{ route('management.export') }}" class="btn btn-secondary shadow-sm">
-                <i class="fas fa-download fa-sm text-white-50 me-2"></i> Export Report
-            </a>
         </div>
 
         <!-- Top Stats Cards -->
