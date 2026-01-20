@@ -69,10 +69,7 @@
                             @forelse ($staff->taskForces as $tf)
                                 <tr>
                                     <td>
-                                        <a href="{{ route('hod.task-forces.show', $tf->id) }}"
-                                            class="text-decoration-none fw-bold">
-                                            {{ $tf->name }}
-                                        </a>
+                                        <div class="fw-bold">{{ $tf->name }}</div>
                                         <div class="small text-muted">{{ $tf->category }}</div>
                                     </td>
                                     <td>{{ $tf->pivot->role }}</td>
