@@ -190,9 +190,16 @@ class WorkloadController extends Controller
     {
         $user = Auth::user();
 
-        // Get years where user has tasks
+        // Get current academic session to exclude it
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        $currentYear = $currentSession ? $currentSession->academic_year : null;
+
+        // Get years where user has tasks (excluding current session)
         $availableYears = $user->taskForces()
             ->select('task_forces.academic_year')
+            ->when($currentYear, function ($query) use ($currentYear) {
+                $query->where('task_forces.academic_year', '!=', $currentYear);
+            })
             ->distinct()
             ->orderBy('task_forces.academic_year', 'desc')
             ->pluck('task_forces.academic_year');
