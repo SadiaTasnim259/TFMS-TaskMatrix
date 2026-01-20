@@ -36,7 +36,6 @@
                     <thead class="bg-light">
                         <tr>
                             <th class="ps-4">Task Force Name</th>
-                            <th>Category</th>
                             <th>Your Role</th>
                             <th>Weightage</th>
                             <th class="text-center">Status</th>
@@ -49,15 +48,6 @@
                                 <td class="ps-4">
                                     <div class="fw-bold text-dark">{{ $tf->name }}</div>
                                     <small class="text-muted">{{ $tf->academic_year }}</small>
-                                </td>
-                                <td>
-                                    @if($tf->category)
-                                        <span class="badge bg-secondary bg-opacity-10 text-secondary border">
-                                            {{ $tf->category }}
-                                        </span>
-                                    @else
-                                        <span class="text-muted small fst-italic">N/A</span>
-                                    @endif
                                 </td>
                                 <td>
                                     <span class="badge bg-primary bg-opacity-10 text-primary border border-primary px-3">
@@ -83,7 +73,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-5">
+                                <td colspan="5" class="text-center py-5">
                                     <div class="mb-3">
                                         <i class="fas fa-clipboard-check fa-3x text-muted opacity-25"></i>
                                     </div>
