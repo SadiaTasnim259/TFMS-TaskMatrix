@@ -246,17 +246,30 @@ class WorkloadController extends Controller
     {
         $user = Auth::user();
 
-        // Calculate workload
-        $totalWorkload = $user->calculateTotalWorkload();
+        // Get current academic session
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        $currentYear = $currentSession ? $currentSession->academic_year : null;
+
+        // Calculate workload - filtered by current session
+        $totalWorkload = $user->taskForces()
+            ->where('active', true)
+            ->when($currentYear, function ($query) use ($currentYear) {
+                $query->where('academic_year', $currentYear);
+            })
+            ->sum('default_weightage');
+
         $status = $workloadService->calculateStatus($totalWorkload);
 
         // Thresholds
         $minWeightage = (float) (Configuration::where('config_key', 'min_weightage')->value('config_value') ?? 10);
         $maxWeightage = (float) (Configuration::where('config_key', 'max_weightage')->value('config_value') ?? 20);
 
-        // Get active task forces
+        // Get active task forces filtered by current session
         $taskForces = $user->taskForces()
             ->where('active', true)
+            ->when($currentYear, function ($query) use ($currentYear) {
+                $query->where('academic_year', $currentYear);
+            })
             ->withPivot('role')
             ->get();
 
@@ -266,7 +279,8 @@ class WorkloadController extends Controller
             'status',
             'minWeightage',
             'maxWeightage',
-            'taskForces'
+            'taskForces',
+            'currentSession'
         ));
 
         return $pdf->download('workload_summary.pdf');

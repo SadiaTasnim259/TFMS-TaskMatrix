@@ -130,6 +130,16 @@
                 <td>{{ $user->department->name ?? 'N/A' }}</td>
             </tr>
             <tr>
+                <td class="label">Academic Session:</td>
+                <td>
+                    @if(isset($currentSession))
+                        {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                    @else
+                        N/A
+                    @endif
+                </td>
+            </tr>
+            <tr>
                 <td class="label">Date Generated:</td>
                 <td>{{ now()->format('d M Y, h:i A') }}</td>
             </tr>
@@ -155,7 +165,6 @@
         <thead>
             <tr>
                 <th>Task Force Name</th>
-                <th>Category</th>
                 <th>Role</th>
                 <th style="text-align: right;">Weightage</th>
             </tr>
@@ -164,13 +173,12 @@
             @forelse($taskForces as $tf)
                 <tr>
                     <td>{{ $tf->name }}</td>
-                    <td>{{ $tf->category }}</td>
                     <td>{{ $tf->pivot->role ?? 'Member' }}</td>
                     <td style="text-align: right;">{{ $tf->default_weightage }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4" style="text-align: center; padding: 20px;">No active task forces found.</td>
+                    <td colspan="3" style="text-align: center; padding: 20px;">No active task forces found.</td>
                 </tr>
             @endforelse
         </tbody>
