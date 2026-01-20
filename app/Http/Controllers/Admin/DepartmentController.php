@@ -39,6 +39,9 @@ class DepartmentController extends Controller
             'active' => 'boolean',
         ]);
 
+        // Handle checkbox unchecked (checkboxes not sent when unchecked)
+        $validated['active'] = $request->has('active');
+
         $department = Department::create($validated);
 
         AuditLog::log(
@@ -76,7 +79,7 @@ class DepartmentController extends Controller
         ]);
 
         $oldValues = $department->toArray();
-        
+
         // Handle checkbox unchecked
         $validated['active'] = $request->has('active');
 
