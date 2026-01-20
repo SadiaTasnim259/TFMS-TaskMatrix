@@ -183,9 +183,6 @@
                     <tr>
                         <th>Department</th>
                         <th>Department Code</th>
-                        <th>Head of Department</th>
-                        <th>Assigned By</th>
-                        <th>Assigned Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -193,27 +190,6 @@
                         <tr>
                             <td><strong>{{ $dept->name }}</strong></td>
                             <td><code>{{ $dept->code }}</code></td>
-                            <td>
-                                @if ($dept->head_id && $dept->head)
-                                    <small>{{ $dept->head->fullName() }}</small>
-                                @else
-                                    <span class="text-muted">--</span>
-                                @endif
-                            </td>
-                            <td>
-                                @if ($dept->pivot->assigned_by)
-                                    <small class="text-muted">
-                                        {{ \App\Models\User::find($dept->pivot->assigned_by)?->name ?? 'Unknown' }}
-                                    </small>
-                                @else
-                                    <span class="text-muted">--</span>
-                                @endif
-                            </td>
-                            <td>
-                                <small class="text-muted">
-                                    {{ $dept->pivot->created_at?->format('M d, Y') ?? '--' }}
-                                </small>
-                            </td>
                         </tr>
                     @endforeach
                 </tbody>
