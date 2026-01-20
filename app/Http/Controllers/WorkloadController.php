@@ -245,13 +245,21 @@ class WorkloadController extends Controller
     public function assignedTaskForces()
     {
         $user = Auth::user();
+
+        // Get current academic session
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        $currentYear = $currentSession ? $currentSession->academic_year : null;
+
         $taskForces = $user->taskForces()
             ->where('active', true)
+            ->when($currentYear, function ($query) use ($currentYear) {
+                $query->where('academic_year', $currentYear);
+            })
             ->withPivot('role')
             ->latest()
             ->get();
 
-        return view('workload.assigned_task_forces', compact('taskForces'));
+        return view('workload.assigned_task_forces', compact('taskForces', 'currentSession'));
     }
 
     /**
