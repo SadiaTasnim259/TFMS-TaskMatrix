@@ -89,7 +89,7 @@
 
     <div class="summary">
         <p><strong>Total Departments:</strong> {{ $departments->count() }}</p>
-        <p><strong>Total Active Task Forces:</strong> {{ $departments->sum('task_forces_count') }}</p>
+        <p><strong>Total Active TaskForce:</strong> {{ $departments->sum('task_forces_count') }}</p>
         <p><strong>Report Type:</strong> Task Force Distribution by Department</p>
     </div>
 
@@ -98,7 +98,7 @@
             <tr>
                 <th>#</th>
                 <th>Department</th>
-                <th class="text-center">Active Task Forces</th>
+                <th class="text-center">Active TaskForce</th>
             </tr>
         </thead>
         <tbody>

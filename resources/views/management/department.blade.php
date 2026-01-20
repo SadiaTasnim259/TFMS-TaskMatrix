@@ -23,7 +23,7 @@
                                 <th scope="col" class="px-4 py-3 border-0">Staff Name</th>
                                 <th scope="col" class="px-4 py-3 border-0">Total Weightage</th>
                                 <th scope="col" class="px-4 py-3 border-0">Status</th>
-                                <th scope="col" class="px-4 py-3 border-0">Task Forces</th>
+                                <th scope="col" class="px-4 py-3 border-0">TaskForce</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,7 +60,7 @@
                                                 @endforeach
                                             </ul>
                                         @else
-                                            <span class="text-muted fst-italic">No task forces assigned</span>
+                                            <span class="text-muted fst-italic">No TaskForce assigned</span>
                                         @endif
                                     </td>
                                 </tr>

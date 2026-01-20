@@ -58,7 +58,7 @@
                     <h5 class="card-title fw-bold">Task Force Assignments</h5>
                     <p class="card-text text-muted small">Assign members, adjust roles, and balance under-loaded staff.</p>
                     <a href="{{ route('hod.task-forces.index') }}"
-                        class="btn btn-outline-warning btn-sm stretched-link">Manage Task Forces</a>
+                        class="btn btn-outline-warning btn-sm stretched-link">Manage TaskForce</a>
                 </div>
             </div>
         </div>

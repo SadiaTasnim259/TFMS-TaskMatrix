@@ -106,7 +106,7 @@
                                 @empty
                                     <tr>
                                         <td colspan="3" class="text-center py-5">
-                                            <p class="text-muted mb-0">No active task forces contributed to this workload.</p>
+                                            <p class="text-muted mb-0">No active TaskForce contributed to this workload.</p>
                                         </td>
                                     </tr>
                                 @endforelse

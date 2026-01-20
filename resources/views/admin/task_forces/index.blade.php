@@ -3,10 +3,10 @@
 @section('content')
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
         <div>
-            <p class="text-uppercase text-muted fw-semibold small mb-1">Admin • Task Forces</p>
+            <p class="text-uppercase text-muted fw-semibold small mb-1">Admin • TaskForce</p>
             <h1 class="h3 section-title mb-0">Task Force Registry</h1>
             <p class="text-muted mb-0">
-                Manage task forces, ownership, and departmental assignments.
+                Manage TaskForce, ownership, and departmental assignments.
                 @if(isset($currentSession))
                     <span class="badge bg-primary ms-2">
                         <i class="fas fa-calendar-alt me-1"></i>
@@ -156,7 +156,7 @@
             @else
                 <div class="p-4 text-center text-muted">
                     <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                    <p>No task forces found.</p>
+                    <p>No TaskForce found.</p>
                     <a href="{{ route('admin.task-forces.create') }}" class="btn btn-sm btn-primary">
                         <i class="fas fa-plus"></i> Create First Task Force
                     </a>
@@ -168,7 +168,7 @@
             <div class="card-footer d-flex justify-content-between align-items-center">
                 <small class="text-muted">
                     Showing {{ $taskForces->firstItem() ?? 0 }} to {{ $taskForces->lastItem() ?? 0 }}
-                    of {{ $taskForces->total() }} task forces
+                    of {{ $taskForces->total() }} TaskForce
                 </small>
                 {{ $taskForces->withQueryString()->links() }}
             </div>

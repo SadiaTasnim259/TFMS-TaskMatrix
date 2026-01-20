@@ -62,7 +62,7 @@
                                     <th>Department</th>
                                     <th>Total Weightage</th>
                                     <th>Status</th>
-                                    <th>Task Forces</th>
+                                    <th>TaskForce</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

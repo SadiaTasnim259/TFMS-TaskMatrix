@@ -174,7 +174,7 @@
                         </a>
                         <a class="nav-link @if(request()->routeIs('admin.task-forces.*')) active @endif"
                             href="{{ route('admin.task-forces.index') }}">
-                            📋 Task Forces
+                            📋 TaskForce
                         </a>
                         <a class="nav-link @if(request()->routeIs('admin.configuration.*')) active @endif"
                             href="{{ route('admin.configuration.index') }}">
@@ -198,7 +198,7 @@
                         </a>
                         <a class="nav-link @if(request()->routeIs('hod.task-forces.*')) active @endif"
                             href="{{ route('hod.task-forces.index') }}">
-                            📋 Task Forces
+                            📋 TaskForce
                         </a>
                     @endif
 

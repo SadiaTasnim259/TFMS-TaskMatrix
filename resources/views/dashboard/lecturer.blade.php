@@ -9,7 +9,7 @@
             <span class="badge badge-soft mb-2">Lecturer</span>
             <h1 class="h2 section-title">My Workload Portfolio</h1>
             <p class="text-muted mb-0">
-                View your assigned task forces, workload summary, and submit remarks to your HOD.
+                View your assigned TaskForce, workload summary, and submit remarks to your HOD.
                 @if(isset($currentSession))
                     <span class="badge bg-primary ms-2">
                         <i class="fas fa-calendar-alt me-1"></i>
@@ -84,7 +84,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <p class="text-muted small mb-1 text-uppercase fw-bold">Active Task Forces</p>
+                            <p class="text-muted small mb-1 text-uppercase fw-bold">Active TaskForce</p>
                             <h3 class="mb-0 fw-bold text-info">{{ $activeTasksCount }}</h3>
                         </div>
                         <div class="bg-info bg-opacity-10 rounded-circle p-3">
@@ -107,7 +107,7 @@
                         <i class="fas fa-briefcase fa-2x"></i>
                     </div>
                     <h5 class="card-title fw-bold">Assigned Taskforces</h5>
-                    <p class="card-text text-muted small">View the task forces you are currently a member of.</p>
+                    <p class="card-text text-muted small">View the TaskForce you are currently a member of.</p>
                     <a href="{{ route('workload.assigned-task-forces') }}"
                         class="btn btn-outline-primary btn-sm stretched-link">View Portfolio</a>
                 </div>

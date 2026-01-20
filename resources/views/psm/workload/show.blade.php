@@ -141,7 +141,7 @@
                         <tr>
                             <th>Staff Member</th>
                             <th>Role</th>
-                            <th>Active Task Forces</th>
+                            <th>Active TaskForce</th>
                             <th>Total Weightage</th>
                             <th>Status</th>
                             <th>Details</th>
@@ -198,9 +198,9 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <h6>Assigned Task Forces</h6>
+                                                    <h6>Assigned TaskForce</h6>
                                                     @if($staff->taskForces->isEmpty())
-                                                        <p class="text-muted">No active task forces assigned.</p>
+                                                        <p class="text-muted">No active TaskForce assigned.</p>
                                                     @else
                                                         <table class="table table-sm table-bordered">
                                                             <thead>

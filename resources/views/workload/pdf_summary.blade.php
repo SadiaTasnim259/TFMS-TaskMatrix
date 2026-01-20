@@ -160,7 +160,7 @@
         </div>
     </div>
 
-    <h3>Assigned Task Forces</h3>
+    <h3>Assigned TaskForce</h3>
     <table class="data-table">
         <thead>
             <tr>
@@ -178,7 +178,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3" style="text-align: center; padding: 20px;">No active task forces found.</td>
+                    <td colspan="3" style="text-align: center; padding: 20px;">No active TaskForce found.</td>
                 </tr>
             @endforelse
         </tbody>

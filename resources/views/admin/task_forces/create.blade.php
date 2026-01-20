@@ -42,7 +42,7 @@
                             <input type="text" class="form-control"
                                 value="{{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}" disabled
                                 readonly>
-                            <small class="form-text text-muted">Task forces are created for the current academic
+                            <small class="form-text text-muted">TaskForce are created for the current academic
                                 session.</small>
                         @else
                             <input type="text" class="form-control is-invalid" value="No active session" disabled readonly>

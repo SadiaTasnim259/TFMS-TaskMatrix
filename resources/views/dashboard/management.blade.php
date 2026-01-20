@@ -73,13 +73,13 @@
             </div>
         </div>
 
-        <!-- Task Forces Card -->
+        <!-- TaskForce Card -->
         <div class="col-md-4">
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <p class="text-muted small mb-1 text-uppercase fw-bold">Active Task Forces</p>
+                            <p class="text-muted small mb-1 text-uppercase fw-bold">Active TaskForce</p>
                             <h3 class="mb-0 fw-bold text-info">{{ $activeTaskForces }}</h3>
                         </div>
                         <div class="bg-info bg-opacity-10 rounded-circle p-3">

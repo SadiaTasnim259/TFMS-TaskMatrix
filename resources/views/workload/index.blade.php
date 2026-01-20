@@ -9,7 +9,7 @@
             <div class="col-md-8">
                 <h1 class="h2">My Workload Dashboard</h1>
                 <p class="text-muted">
-                    Overview of your assigned task forces and workload status
+                    Overview of your assigned TaskForce and workload status
                     @if(isset($currentSession))
                         <span class="badge bg-primary ms-2">
                             <i class="fas fa-calendar-alt me-1"></i>
@@ -47,7 +47,7 @@
                             </div>
                             <i class="fas fa-weight-hanging fa-2x opacity-50"></i>
                         </div>
-                        <small class="text-white-50">Calculated from assigned task forces</small>
+                        <small class="text-white-50">Calculated from assigned TaskForce</small>
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="card-title mb-0">Active Task Forces</h6>
+                                <h6 class="card-title mb-0">Active TaskForce</h6>
                                 <h2 class="mt-2 mb-0">{{ $assignedTaskForces->count() }}</h2>
                             </div>
                             <i class="fas fa-tasks fa-2x opacity-50"></i>
@@ -81,15 +81,15 @@
             </div>
         </div>
 
-        <!-- Assigned Task Forces Section -->
+        <!-- Assigned TaskForce Section -->
         <div class="card mb-4">
             <div class="card-header bg-light">
                 <i class="fas fa-list me-1"></i>
-                <strong>Assigned Task Forces</strong>
+                <strong>Assigned TaskForce</strong>
             </div>
             <div class="card-body">
                 @if($assignedTaskForces->isEmpty())
-                    <p class="text-muted text-center my-3">No task forces currently assigned.</p>
+                    <p class="text-muted text-center my-3">No TaskForce currently assigned.</p>
                 @else
                     <div class="table-responsive">
                         <table class="table table-sm table-hover">

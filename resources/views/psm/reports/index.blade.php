@@ -77,7 +77,7 @@
                     <div class="card-body">
                         <div class="mb-4">
                             <h6 class="fw-bold text-dark">📋 Task Force List & Members</h6>
-                            <p class="small text-muted mb-0">Full list of all task forces, their leaders, assigned
+                            <p class="small text-muted mb-0">Full list of all TaskForce, their leaders, assigned
                                 departments, and member statistics.</p>
                         </div>
                         <hr>

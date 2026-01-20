@@ -78,7 +78,7 @@
                             <th>Department</th>
                             <th>Head of Department</th>
                             <th>Staff Count</th>
-                            <th>Task Forces</th>
+                            <th>TaskForce</th>
                             <th>Status</th>
                             <th>Submitted At</th>
                             <th>Actions</th>

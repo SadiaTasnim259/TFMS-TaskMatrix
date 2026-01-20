@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Faculty Task Forces')
+@section('title', 'Faculty TaskForce')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="h3 mb-0 text-gray-800">Faculty Task Force Directory</h1>
             <p class="text-muted mb-0">
-                View and manage all task forces across departments.
+                View and manage all TaskForce across departments.
                 @if(isset($currentSession))
                     <span class="badge bg-primary ms-2">
                         <i class="fas fa-calendar-alt me-1"></i>
@@ -110,7 +110,7 @@
                             <tr>
                                 <td colspan="5" class="text-center py-5 text-muted">
                                     <i class="fas fa-folder-open fa-3x mb-3 text-gray-300"></i>
-                                    <p class="mb-0">No task forces found matching your criteria.</p>
+                                    <p class="mb-0">No TaskForce found matching your criteria.</p>
                                 </td>
                             </tr>
                         @endforelse

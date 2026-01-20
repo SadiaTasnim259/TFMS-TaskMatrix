@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Assigned Task Forces')
+@section('title', 'Assigned TaskForce')
 
 @section('content')
     <div class="row align-items-center mb-4">
         <div class="col-md-6">
             <h1 class="h3 mb-0 text-gray-800">Your Task Force Assignments</h1>
             <p class="text-muted small mb-0">
-                Task forces you are currently assigned to for this session.
+                TaskForce you are currently assigned to for this session.
                 @if(isset($currentSession))
                     <span class="badge bg-primary ms-2">
                         <i class="fas fa-calendar-alt me-1"></i>

@@ -1,14 +1,14 @@
 @extends('hod.layouts.app')
 
-@section('title', 'My Department Task Forces')
+@section('title', 'My Department TaskForce')
 
 @section('content')
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 mb-0">Department Task Forces</h1>
+            <h1 class="h3 mb-0">Department TaskForce</h1>
             <p class="text-muted mb-0">
-                View and manage task forces assigned to your department
+                View and manage TaskForce assigned to your department
                 @if(isset($currentSession))
                     <span class="badge bg-primary ms-2">
                         <i class="fas fa-calendar-alt me-1"></i>
@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <!-- Task Forces Table -->
+    <!-- TaskForce Table -->
     <div class="card">
         <div class="table-responsive" style="min-height: 400px;">
             @if ($taskForces->count() > 0)
@@ -137,7 +137,7 @@
             @else
                 <div class="p-5 text-center text-muted">
                     <i class="fas fa-folder-open fa-3x mb-3"></i>
-                    <p>No task forces found for your department matching the criteria.</p>
+                    <p>No TaskForce found for your department matching the criteria.</p>
                 </div>
             @endif
         </div>

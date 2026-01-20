@@ -83,7 +83,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-white">
-                    <h5 class="mb-0">Assigned Task Forces</h5>
+                    <h5 class="mb-0">Assigned TaskForce</h5>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
@@ -112,7 +112,7 @@
                             @empty
                                 <tr>
                                     <td colspan="4" class="text-center py-4 text-muted">
-                                        No active task forces assigned.
+                                        No active TaskForce assigned.
                                     </td>
                                 </tr>
                             @endforelse

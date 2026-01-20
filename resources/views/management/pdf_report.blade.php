@@ -37,7 +37,7 @@
         <thead>
             <tr>
                 <th>Category</th>
-                <th>Total Task Forces</th>
+                <th>Total TaskForce</th>
             </tr>
         </thead>
         <tbody>

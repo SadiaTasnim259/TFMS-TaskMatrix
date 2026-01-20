@@ -202,7 +202,7 @@
                         </a>
                         <a class="nav-link @if(request()->routeIs('hod.task-forces.*')) active @endif"
                             href="{{ route('hod.task-forces.index') }}">
-                            📋 Task Forces
+                            📋 TaskForce
                         </a>
                     @endif
 
