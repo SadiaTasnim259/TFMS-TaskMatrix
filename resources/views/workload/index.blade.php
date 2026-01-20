@@ -8,7 +8,15 @@
         <div class="row mb-4">
             <div class="col-md-8">
                 <h1 class="h2">My Workload Dashboard</h1>
-                <p class="text-muted">Overview of your assigned task forces and workload status</p>
+                <p class="text-muted">
+                    Overview of your assigned task forces and workload status
+                    @if(isset($currentSession))
+                        <span class="badge bg-primary ms-2">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ $currentSession->academic_year }} - Semester {{ $currentSession->semester }}
+                        </span>
+                    @endif
+                </p>
             </div>
             <div class="col-md-4 text-end">
                 <form action="{{ route('reports.staff-workload') }}" method="POST" class="d-inline">

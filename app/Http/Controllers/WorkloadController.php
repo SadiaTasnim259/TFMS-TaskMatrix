@@ -69,16 +69,28 @@ class WorkloadController extends Controller
         $assignedTaskForces = collect();
         $calculatedTotalWeightage = 0;
 
+        // Get current academic session
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        $currentYear = $currentSession ? $currentSession->academic_year : null;
+
         if ($staffMember) {
             $assignedTaskForces = $staffMember->taskForces()
                 ->where('active', true)
+                ->when($currentYear, function ($query) use ($currentYear) {
+                    $query->where('academic_year', $currentYear);
+                })
                 ->withPivot('role')
                 ->get();
 
-            $calculatedTotalWeightage = $staffMember->calculateTotalWorkload();
+            $calculatedTotalWeightage = $staffMember->taskForces()
+                ->where('active', true)
+                ->when($currentYear, function ($query) use ($currentYear) {
+                    $query->where('academic_year', $currentYear);
+                })
+                ->sum('default_weightage');
         }
 
-        return view('workload.index', compact('submissions', 'years', 'statuses', 'assignedTaskForces', 'calculatedTotalWeightage'));
+        return view('workload.index', compact('submissions', 'years', 'statuses', 'assignedTaskForces', 'calculatedTotalWeightage', 'currentSession'));
     }
 
     /**
@@ -88,14 +100,27 @@ class WorkloadController extends Controller
     {
         $user = Auth::user();
 
-        // Get active task forces
+        // Get current academic session
+        $currentSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        $currentYear = $currentSession ? $currentSession->academic_year : null;
+
+        // Get active task forces filtered by current session
         $taskForces = $user->taskForces()
             ->where('active', true)
+            ->when($currentYear, function ($query) use ($currentYear) {
+                $query->where('academic_year', $currentYear);
+            })
             ->withPivot('role')
             ->get();
 
-        // Calculate metrics
-        $totalWorkload = $user->calculateTotalWorkload();
+        // Calculate metrics - filtered by current session
+        $totalWorkload = $user->taskForces()
+            ->where('active', true)
+            ->when($currentYear, function ($query) use ($currentYear) {
+                $query->where('academic_year', $currentYear);
+            })
+            ->sum('default_weightage');
+
         $status = $workloadService->calculateStatus($totalWorkload);
         $statusColor = $workloadService->getStatusColor($status);
 
@@ -109,7 +134,8 @@ class WorkloadController extends Controller
             'status',
             'statusColor',
             'minWeightage',
-            'maxWeightage'
+            'maxWeightage',
+            'currentSession'
         ));
     }
 
