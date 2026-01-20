@@ -30,51 +30,52 @@
     <!-- Quick Actions Grid -->
     <div class="row g-4 mb-5">
 
-
         <!-- Departments -->
-        <div class="col-md-6 col-lg-3">
+        <div class="col-md-6 col-lg-4">
             <div class="card h-100 border-0 shadow-sm hover-card">
-                <div class="card-body text-center p-4">
+                <div class="card-body text-center p-4 d-flex flex-column">
                     <div class="icon-box bg-success bg-opacity-10 text-success mx-auto mb-3 rounded-circle d-flex align-items-center justify-content-center"
                         style="width: 60px; height: 60px;">
                         <i class="fas fa-building fa-2x"></i>
                     </div>
                     <h5 class="card-title fw-bold">Departments</h5>
-                    <p class="card-text text-muted small">Configure academic departments and organizational units.</p>
-                    <a href="{{ route('admin.departments.index') }}"
-                        class="btn btn-outline-success btn-sm stretched-link">Manage Depts</a>
+                    <p class="card-text text-muted small flex-grow-1">Configure academic departments and organizational
+                        units.</p>
+                    <a href="{{ route('admin.departments.index') }}" class="btn btn-outline-success btn-sm mt-auto">Manage
+                        Depts</a>
                 </div>
             </div>
         </div>
 
         <!-- User Accounts -->
-        <div class="col-md-6 col-lg-3">
+        <div class="col-md-6 col-lg-4">
             <div class="card h-100 border-0 shadow-sm hover-card">
-                <div class="card-body text-center p-4">
+                <div class="card-body text-center p-4 d-flex flex-column">
                     <div class="icon-box bg-warning bg-opacity-10 text-warning mx-auto mb-3 rounded-circle d-flex align-items-center justify-content-center"
                         style="width: 60px; height: 60px;">
                         <i class="fas fa-user-lock fa-2x"></i>
                     </div>
                     <h5 class="card-title fw-bold">User Accounts</h5>
-                    <p class="card-text text-muted small">Handle logins, password resets, and account security.</p>
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-outline-warning btn-sm stretched-link">Manage
+                    <p class="card-text text-muted small flex-grow-1">Handle logins, password resets, and account security.
+                    </p>
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-outline-warning btn-sm mt-auto">Manage
                         Users</a>
                 </div>
             </div>
         </div>
 
         <!-- System Config -->
-        <div class="col-md-6 col-lg-3">
+        <div class="col-md-6 col-lg-4">
             <div class="card h-100 border-0 shadow-sm hover-card">
-                <div class="card-body text-center p-4">
+                <div class="card-body text-center p-4 d-flex flex-column">
                     <div class="icon-box bg-secondary bg-opacity-10 text-secondary mx-auto mb-3 rounded-circle d-flex align-items-center justify-content-center"
                         style="width: 60px; height: 60px;">
                         <i class="fas fa-cogs fa-2x"></i>
                     </div>
                     <h5 class="card-title fw-bold">Workload Thresholds</h5>
-                    <p class="card-text text-muted small">Manage minimum and maximum workload limits.</p>
+                    <p class="card-text text-muted small flex-grow-1">Manage minimum and maximum workload limits.</p>
                     <a href="{{ route('admin.workload.thresholds.edit') }}"
-                        class="btn btn-outline-secondary btn-sm stretched-link">Manage Thresholds</a>
+                        class="btn btn-outline-secondary btn-sm mt-auto">Manage Thresholds</a>
                 </div>
             </div>
         </div>
