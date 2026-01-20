@@ -30,14 +30,17 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label for="category" class="form-label">Category</label>
-                    <select class="form-select" id="category" name="category">
-                        <option value="">-- All Categories --</option>
-                        @foreach($categories as $cat)
-                            <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>
-                                {{ $cat }}
-                            </option>
-                        @endforeach
+                    <label for="assignment_status" class="form-label">Assignment Status</label>
+                    <select class="form-select" id="assignment_status" name="assignment_status">
+                        <option value="">-- All Status --</option>
+                        <option value="assigned" {{ request('assignment_status') == 'assigned' ? 'selected' : '' }}>Assigned
+                        </option>
+                        <option value="not_assigned" {{ request('assignment_status') == 'not_assigned' ? 'selected' : '' }}>
+                            Not Assigned</option>
+                        <option value="pending" {{ request('assignment_status') == 'pending' ? 'selected' : '' }}>Pending
+                        </option>
+                        <option value="locked" {{ request('assignment_status') == 'locked' ? 'selected' : '' }}>Locked
+                        </option>
                     </select>
                 </div>
 

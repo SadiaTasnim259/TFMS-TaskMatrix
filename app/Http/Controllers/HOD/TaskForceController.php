@@ -49,11 +49,6 @@ class TaskForceController extends Controller
             $query->where('academic_year', $currentSession->academic_year);
         }
 
-        // Filter by Category
-        if ($request->filled('category')) {
-            $query->where('category', $request->category);
-        }
-
         // Search by Name
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -68,12 +63,43 @@ class TaskForceController extends Controller
                     $subQ->where('department_id', $departmentId);
                 });
             }
-        ])->latest()->paginate(10)->withQueryString();
+        ])->latest()->get();
 
-        // Data for filters
-        $categories = ['Strategic', 'Technical', 'Operational'];
+        // Filter by Assignment Status (post-query since it requires relationship data)
+        if ($request->filled('assignment_status')) {
+            $status = $request->assignment_status;
+            $taskForces = $taskForces->filter(function ($tf) use ($status) {
+                $hasPending = $tf->membershipRequests->where('status', 'pending')->isNotEmpty();
+                $isLocked = $tf->isLocked();
+                $memberCount = $tf->members->count();
 
-        return view('hod.task_forces.index', compact('taskForces', 'categories', 'currentSession'));
+                switch ($status) {
+                    case 'locked':
+                        return $isLocked;
+                    case 'pending':
+                        return $hasPending && !$isLocked;
+                    case 'assigned':
+                        return $memberCount > 0 && !$hasPending && !$isLocked;
+                    case 'not_assigned':
+                        return $memberCount == 0 && !$hasPending && !$isLocked;
+                    default:
+                        return true;
+                }
+            });
+        }
+
+        // Paginate the collection manually
+        $page = $request->get('page', 1);
+        $perPage = 10;
+        $taskForces = new \Illuminate\Pagination\LengthAwarePaginator(
+            $taskForces->forPage($page, $perPage),
+            $taskForces->count(),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        return view('hod.task_forces.index', compact('taskForces', 'currentSession'));
     }
 
     /**
