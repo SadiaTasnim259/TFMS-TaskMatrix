@@ -43,18 +43,6 @@
                     </select>
                 </div>
 
-                <!-- Model Type Filter -->
-                <div class="col-md-2">
-                    <label class="form-label">Model Type</label>
-                    <select name="model_type" class="form-select">
-                        <option value="">All Types</option>
-                        @foreach($modelTypes as $type)
-                            <option value="{{ $type }}" @if(request('model_type') === $type) selected @endif>
-                                {{ $type }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
 
                 <!-- User Filter -->
                 <div class="col-md-2">
@@ -67,28 +55,6 @@
                             </option>
                         @endforeach
                     </select>
-                </div>
-
-                <!-- Status Filter -->
-                <div class="col-md-2">
-                    <label class="form-label">Status</label>
-                    <select name="status" class="form-select">
-                        <option value="">All Status</option>
-                        <option value="completed" @if(request('status') === 'completed') selected @endif>Success</option>
-                        <option value="failed" @if(request('status') === 'failed') selected @endif>Failed</option>
-                        <option value="pending" @if(request('status') === 'pending') selected @endif>Pending</option>
-                    </select>
-                </div>
-
-                <!-- Date Range -->
-                <div class="col-md-3">
-                    <label class="form-label">Start Date</label>
-                    <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">End Date</label>
-                    <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
                 </div>
 
                 <!-- Buttons -->
@@ -125,96 +91,96 @@
                 </thead>
                 <tbody>
                     @forelse($logs as $log)
-                                    <tr>
-                                        <!-- Timestamp -->
-                                        <td>
-                                            <div class="fw-semibold">{{ $log->created_at->format('Y-m-d H:i:s') }}</div>
-                                            <small class="text-muted">{{ $log->created_at->diffForHumans() }}</small>
-                                        </td>
+                        <tr>
+                            <!-- Timestamp -->
+                            <td>
+                                <div class="fw-semibold">{{ $log->created_at->format('Y-m-d H:i:s') }}</div>
+                                <small class="text-muted">{{ $log->created_at->diffForHumans() }}</small>
+                            </td>
 
-                                        <!-- User -->
-                                        <td>
-                                            @if($log->user)
-                                                <div class="d-flex align-items-center">
-                                                    <div class="avatar-circle bg-primary bg-opacity-10 text-primary me-2"
-                                                        style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
-                                                        {{ substr($log->user->name, 0, 1) }}
-                                                    </div>
-                                                    <div>
-                                                        <div class="fw-bold">{{ $log->user->name }}</div>
-                                                        <small class="text-muted">{{ $log->user->email }}</small>
-                                                    </div>
-                                                </div>
-                                            @else
-                                                <span class="badge bg-secondary">System</span>
-                                            @endif
-                                        </td>
+                            <!-- User -->
+                            <td>
+                                @if($log->user)
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle bg-primary bg-opacity-10 text-primary me-2"
+                                            style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                                            {{ substr($log->user->name, 0, 1) }}
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold">{{ $log->user->name }}</div>
+                                            <small class="text-muted">{{ $log->user->email }}</small>
+                                        </div>
+                                    </div>
+                                @else
+                                    <span class="badge bg-secondary">System</span>
+                                @endif
+                            </td>
 
-                                        <!-- Action -->
-                                        <td>
-                                            @php
-                                                $actionClass = match ($log->action) {
-                                                    'CREATE' => 'success',
-                                                    'UPDATE' => 'warning',
-                                                    'DELETE' => 'danger',
-                                                    'LOGIN' => 'info',
-                                                    'LOGOUT' => 'secondary',
-                                                    default => 'primary'
-                                                };
-                                            @endphp
-                         <span
-                                                class="badge bg-{{ $actionClass }} bg-opacity-10 text-{{ $actionClass }} border border-{{ $actionClass }}">
-                                                {{ $log->action }}
-                                            </span>
-                                        </td>
+                            <!-- Action -->
+                            <td>
+                                @php
+                                    $actionClass = match ($log->action) {
+                                        'CREATE' => 'success',
+                                        'UPDATE' => 'warning',
+                                        'DELETE' => 'danger',
+                                        'LOGIN' => 'info',
+                                        'LOGOUT' => 'secondary',
+                                        default => 'primary'
+                                    };
+                                @endphp
+                                <span
+                                    class="badge bg-{{ $actionClass }} bg-opacity-10 text-{{ $actionClass }} border border-{{ $actionClass }}">
+                                    {{ $log->action }}
+                                </span>
+                            </td>
 
-                                        <!-- Model -->
-                                        <td>
-                                            <div class="fw-semibold">{{ $log->model_type }}</div>
-                                            @if($log->model_name)
-                                                <small class="text-muted">{{ Str::limit($log->model_name, 30) }}</small>
-                                            @endif
-                                        </td>
+                            <!-- Model -->
+                            <td>
+                                <div class="fw-semibold">{{ $log->model_type }}</div>
+                                @if($log->model_name)
+                                    <small class="text-muted">{{ Str::limit($log->model_name, 30) }}</small>
+                                @endif
+                            </td>
 
-                                        <!-- Description -->
-                                        <td>
-                                            <small class="text-muted">{{ Str::limit($log->description, 50) }}</small>
-                                        </td>
+                            <!-- Description -->
+                            <td>
+                                <small class="text-muted">{{ Str::limit($log->description, 50) }}</small>
+                            </td>
 
-                                        <!-- Status -->
-                                        <td>
-                                            @if($log->status === 'completed' || $log->status === 'SUCCESS')
-                                                <span class="badge bg-success bg-opacity-10 text-success">
-                                                    <i class="fas fa-check-circle me-1"></i> Success
-                                                </span>
-                                            @elseif($log->status === 'failed' || $log->status === 'FAILED')
-                                                <span class="badge bg-danger bg-opacity-10 text-danger">
-                                                    <i class="fas fa-times-circle me-1"></i> Failed
-                                                </span>
-                                            @elseif($log->status === 'pending')
-                                                <span class="badge bg-warning bg-opacity-10 text-warning">
-                                                    <i class="fas fa-clock me-1"></i> Pending
-                                                </span>
-                                            @else
-                                                <span class="badge bg-secondary bg-opacity-10 text-secondary">
-                                                    {{ ucfirst($log->status) }}
-                                                </span>
-                                            @endif
-                                        </td>
+                            <!-- Status -->
+                            <td>
+                                @if($log->status === 'completed' || $log->status === 'SUCCESS')
+                                    <span class="badge bg-success bg-opacity-10 text-success">
+                                        <i class="fas fa-check-circle me-1"></i> Success
+                                    </span>
+                                @elseif($log->status === 'failed' || $log->status === 'FAILED')
+                                    <span class="badge bg-danger bg-opacity-10 text-danger">
+                                        <i class="fas fa-times-circle me-1"></i> Failed
+                                    </span>
+                                @elseif($log->status === 'pending')
+                                    <span class="badge bg-warning bg-opacity-10 text-warning">
+                                        <i class="fas fa-clock me-1"></i> Pending
+                                    </span>
+                                @else
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary">
+                                        {{ ucfirst($log->status) }}
+                                    </span>
+                                @endif
+                            </td>
 
-                                        <!-- IP Address -->
-                                        <td>
-                                            <small class="font-monospace text-muted">{{ $log->ip_address ?? 'N/A' }}</small>
-                                        </td>
+                            <!-- IP Address -->
+                            <td>
+                                <small class="font-monospace text-muted">{{ $log->ip_address ?? 'N/A' }}</small>
+                            </td>
 
-                                        <!-- Actions -->
-                                        <td class="text-end">
-                                            <a href="{{ route('admin.audit-logs.show', $log) }}" class="btn btn-light btn-sm text-primary"
-                                                title="View Details">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                            <!-- Actions -->
+                            <td class="text-end">
+                                <a href="{{ route('admin.audit-logs.show', $log) }}" class="btn btn-light btn-sm text-primary"
+                                    title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
                     @empty
                         <tr>
                             <td colspan="8" class="text-center text-muted py-5">
