@@ -25,7 +25,7 @@
             <form action="{{ route('hod.task-forces.index') }}" method="GET" class="row g-3">
                 <div class="col-md-6">
                     <label for="search" class="form-label">Search</label>
-                    <input type="text" class="form-control" id="search" name="search" placeholder="Task force name..."
+                    <input type="text" class="form-control" id="search" name="search" placeholder="TaskForce name..."
                         value="{{ request('search') }}">
                 </div>
 

@@ -9,7 +9,7 @@
             <span class="badge badge-soft mb-2">{{ Auth::user()->department->name ?? 'Department' }} Head of
                 Department</span>
             <h1 class="h2 section-title">Department Leadership</h1>
-            <p class="text-muted">Balance workload, curate task force membership, and submit to PSM with confidence.</p>
+            <p class="text-muted">Balance workload, create TaskForce membership, and submit to PSM with confidence.</p>
         </div>
         <div class="col-md-4">
             <div class="card bg-warning text-dark border-0 shadow-sm">
@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <!-- Task Force Assignments -->
+        <!-- TaskForce Assignments -->
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 border-0 shadow-sm hover-card">
                 <div class="card-body text-center p-4">
@@ -56,7 +56,7 @@
                         style="width: 60px; height: 60px;">
                         <i class="fas fa-tasks fa-2x"></i>
                     </div>
-                    <h5 class="card-title fw-bold">Task Force Assignments</h5>
+                    <h5 class="card-title fw-bold">TaskForce Assignments</h5>
                     <p class="card-text text-muted small">Assign members, adjust roles, and balance under-loaded staff.</p>
                     <a href="{{ route('hod.task-forces.index') }}"
                         class="btn btn-outline-warning btn-sm stretched-link">Manage TaskForce</a>
