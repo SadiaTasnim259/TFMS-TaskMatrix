@@ -263,7 +263,7 @@
                         </a>
                         <a class="nav-link @if(request()->routeIs('management.task_distribution')) active @endif"
                             href="{{ route('management.task_distribution') }}">
-                            📊 Taskforce Distribution
+                            📊 TaskForce Distribution
                         </a>
                         <a class="nav-link @if(request()->routeIs('management.department_comparison')) active @endif"
                             href="{{ route('management.department_comparison') }}">
