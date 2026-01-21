@@ -61,7 +61,7 @@
                         <tr>
                             <th class="ps-4 py-3">Task Force Name</th>
                             <th class="py-3">Department</th>
-                            <th class="py-3">Details</th>
+                            <th class="py-3">Members</th>
                             <th class="py-3 text-center">Status</th>
                             <th class="pe-4 py-3 text-end">Action</th>
                         </tr>
