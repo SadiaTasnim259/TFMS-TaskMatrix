@@ -117,12 +117,10 @@
                                                 <i class="fas fa-check"></i> Approve
                                             </button>
                                         </form>
-                                        <button type="button" class="btn btn-sm btn-danger" 
-                                            data-bs-toggle="modal" 
+                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#rejectRequestModal"
                                             data-request-url="{{ route('psm.task-forces.reject-request', [$taskForce->id, $req->id]) }}"
-                                            data-requester-name="{{ $req->requester->name }}"
-                                            title="Reject">
+                                            data-requester-name="{{ $req->requester->name }}" title="Reject">
                                             <i class="fas fa-times"></i> Reject
                                         </button>
                                     </td>
@@ -142,11 +140,13 @@
                 <h6 class="m-0 font-weight-bold text-primary">Assigned Members</h6>
                 <span class="badge bg-info text-dark">{{ $taskForce->members->count() }} Members</span>
             </div>
+            {{-- Hidden as per request
             @if (!$taskForce->is_locked)
-                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addMemberModal">
-                    <i class="fas fa-plus me-1"></i> Add Member
-                </button>
+            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addMemberModal">
+                <i class="fas fa-plus me-1"></i> Add Member
+            </button>
             @endif
+            --}}
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
