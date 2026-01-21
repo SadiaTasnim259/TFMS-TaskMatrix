@@ -6,7 +6,7 @@
     <div class="row align-items-center mb-4">
         <div class="col-md-6">
             <h1 class="h3 mb-0 text-gray-800">Historical Records</h1>
-            <p class="text-muted small mb-0">View your past task force assignments and workload summaries.</p>
+            <p class="text-muted small mb-0">View your past TaskForce assignments and workload summaries.</p>
         </div>
         <div class="col-md-6 text-end">
             <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary btn-sm">
