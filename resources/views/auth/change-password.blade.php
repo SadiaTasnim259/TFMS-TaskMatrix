@@ -139,7 +139,7 @@
                             <!-- Submit Button -->
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-maroon py-2 fw-bold">
-                                    <i class="fas fa-save me-2"></i> Update Password & Login
+                                    <i class="fas fa-save me-2"></i> Update Password and Login
                                 </button>
 
                                 <a class="btn btn-outline-secondary btn-sm mt-2" href="#"
