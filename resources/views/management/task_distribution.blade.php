@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h1 class="h3 section-title mb-0">Taskforce Distribution Overview</h1>
+                <h1 class="h3 section-title mb-0">TaskForce Distribution Overview</h1>
                 <p class="text-muted small mb-0">
                     Distribution of active TaskForce across departments.
                     @if(isset($currentSession))

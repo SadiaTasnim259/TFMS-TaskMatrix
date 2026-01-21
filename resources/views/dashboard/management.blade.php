@@ -119,7 +119,7 @@
                         <i class="fas fa-chart-bar fa-2x"></i>
                     </div>
                     <h5 class="card-title fw-bold">TaskForce Distribution</h5>
-                    <p class="card-text text-muted small flex-grow-1">Analyze task force allocation across categories.</p>
+                    <p class="card-text text-muted small flex-grow-1">Analyze TaskForce allocation across categories.</p>
                     <a href="{{ route('management.task_distribution') }}"
                         class="btn btn-outline-success btn-sm mt-auto">View Analysis</a>
                 </div>
